@@ -9,6 +9,9 @@
     "express": "3.4.8",
     "ejs": "*",
     "sequelize": "*",
-    "mysql": "2.0.0-alpha8"
+    "mysql": "2.0.0-alpha8",
+    "connect-flash": "*",
+    "passport": "*",
+    "passport-local": "*"
   }
 }
