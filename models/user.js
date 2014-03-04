@@ -43,37 +43,27 @@ module.exports = function(sequelize, DataTypes) {
                         });
                     }
                 });
+            },
+            findById: function(id, callback) {
+                User.find({ where: { id: id } }).success(function(user) {
+                    if (!user) {
+                        callback('User ' + id + ' does not exist');
+                    } else {
+                        callback(null, {
+                            id: user.id,
+                            username: user.username,
+                            password: user.password,
+                            email: user.email
+                        });
+                    }
+                });
             }
         }
     })
 
     return User
 }
-/*module.exports.connect = function(params, callback) {
-    var sequlz = new Sequelize(params.dbname, params.username, params.password, params.params);
-    User = sequlz.define('User', {
-        id: {
-            type: Sequelize.INTEGER,
-            primaryKey: true,
-            unique: true
-        },
-        username: {
-            type: Sequelize.STRING,
-            validate: {
-                notEmpty: true,
-                notNull: true
-            },
-            unique: true
-        },
-        email: {
-            type: Sequelize.STRING,
-        },
-        password: {
-            type: Sequelize.STRING,
-        }
-    })
 
-}*/
 
 /*exports.disconnect = function(callback) {
     callback();
@@ -116,21 +106,6 @@ module.exports.update = function(id, username,
         }).error(function(err) {
             callback(err);
         });
-    });
-}*/
-
-/*module.exports.findById = function(id, callback) {
-    User.find({ where: { id: id } }).success(function(user) {
-        if (!user) {
-            callback('User ' + id + ' does not exist');
-        } else {
-            callback(null, {
-                id: user.id,
-                username: user.username,
-                password: user.password,
-                email: user.email
-            });
-        }
     });
 }*/
 

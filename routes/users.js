@@ -15,7 +15,7 @@ module.exports.serialize = function(user, done) {
 }
 
 module.exports.deserialize = function(id, done) {
-    users.findById(id, function (err, user) {
+    db.User.findById(id, function (err, user) {
         done(err, user);
     });
 }
