@@ -28,11 +28,11 @@ module.exports = function(sequelize, DataTypes) {
         password: {
             type: DataTypes.STRING,
         }
-    }/*, {
+    }, {
         associate: function(models) {
-            User.hasMany(models.Game, {as: 'Players'})
+            User.hasMany(models.Game)
         }
-    }*/)
+    })
 
     return User
 }
