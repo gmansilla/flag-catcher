@@ -1,6 +1,6 @@
 module.exports = function(sequelize, DataTypes) {
     var Game = sequelize.define('Game', {
-        title: DataTypes.STRING
+        isOver: DataTypes.INTEGER,
     }, {
         associate: function(models) {
             Game.hasMany(models.User)

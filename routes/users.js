@@ -82,7 +82,7 @@ exports.register = function(req, res) {
     });
 }
 
-exports.add = function(req, res) { //remove this
+exports.add = function(req, res) {
     var user = {
         username: req.body.username,
         email: req.body.email,

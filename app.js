@@ -8,6 +8,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var express = require('express');
 var routes  = require('./routes')
 var users = require('./routes/users');
+var games = require('./routes/games');
 var http = require('http');
 var path = require('path');
 var util = require('util');
@@ -58,6 +59,10 @@ app.post('/login', passport.authenticate('local', {
 }), users.postLogin);
 app.get('/logout',     users.doLogout);
 
+//LOBBY
+games.configure({passport: passport});
+app.get('/lobby', games.lobby);
+app.post('/creategame', games.add);
 
 db
     .sequelize
