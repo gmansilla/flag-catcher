@@ -48,7 +48,7 @@ if ('development' == app.get('env')) {
 
 
 //app.get('/', routes.index);
-/*app.get('/register', users.register);
+app.get('/register', users.register);
 app.post('/usersadd', users.add);
 app.get('/account',    users.ensureAuthenticated, users.doAccount);
 app.get('/login',      users.doLogin);
@@ -56,7 +56,7 @@ app.post('/login', passport.authenticate('local', {
     failureRedirect: '/login',
     failureFlash: true
 }), users.postLogin);
-app.get('/logout',     users.doLogout);*/
+app.get('/logout',     users.doLogout);
 
 
 db
