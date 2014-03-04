@@ -61,7 +61,7 @@ app.get('/logout',     users.doLogout);
 
 db
     .sequelize
-    .sync({ force: true })
+    .sync() //{ force: true } will destroy and recreate everything
     .complete(function(err) {
         if (err) {
             throw err
