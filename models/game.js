@@ -4,7 +4,7 @@ module.exports = function(sequelize, DataTypes) {
     }, {
         associate: function(models) {
             Game.hasMany(models.User)
-            //Game.belongsTo(models.User, {as: 'Creator'})
+            Game.belongsTo(models.User, {as: 'Creator'})
         }
     })
 
