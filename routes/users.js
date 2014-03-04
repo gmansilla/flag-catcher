@@ -2,9 +2,9 @@ var LocalStrategy = require('passport-local').Strategy;
 var users = undefined;
 var passport = undefined;
 exports.configure = function(params) {
-    users = params.users;
     passport = params.passport;
 }
+var db = require('../models')
 
 module.exports.serialize = function(user, done) {
     done(null, user.id);

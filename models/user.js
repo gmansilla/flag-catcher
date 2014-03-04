@@ -2,12 +2,41 @@
  * Created by guille on 2/7/2014.
  */
 
-var util = require('util');
-var Sequelize = require("sequelize");
-var sequelize = undefined;
-var User = undefined;
+//var util = require('util');
 
-module.exports.connect = function(params, callback) {
+//var sequelize = undefined;
+//var User = undefined;
+
+module.exports = function(sequelize, DataTypes) {
+    var User = sequelize.define('User', {
+        id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            unique: true
+        },
+        username: {
+            type: DataTypes.STRING,
+            validate: {
+                notEmpty: true,
+                notNull: true
+            },
+            unique: true
+        },
+        email: {
+            type: DataTypes.STRING,
+        },
+        password: {
+            type: DataTypes.STRING,
+        }
+    }/*, {
+        associate: function(models) {
+            User.hasMany(models.Game, {as: 'Players'})
+        }
+    }*/)
+
+    return User
+}
+/*module.exports.connect = function(params, callback) {
     var sequlz = new Sequelize(params.dbname, params.username, params.password, params.params);
     User = sequlz.define('User', {
         id: {
@@ -29,10 +58,11 @@ module.exports.connect = function(params, callback) {
         password: {
             type: Sequelize.STRING,
         }
-    });
-}
+    })
 
-exports.disconnect = function(callback) {
+}*/
+
+/*exports.disconnect = function(callback) {
     callback();
 }
 
@@ -46,7 +76,7 @@ exports.create = function(user, callback) {
     }).error(function(err) {
         callback(err);
     });
-}
+}*/
 /*module.exports.create = function(id, username,
                                  password, email, callback) {
     User.create({
