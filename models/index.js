@@ -2,7 +2,8 @@ var fs        = require('fs')
     , path      = require('path')
     , Sequelize = require('sequelize')
     , lodash    = require('lodash')
-    , sequelize = new Sequelize('Flag', 'user', 'password')
+    , conf      = require('../database')
+    , sequelize = new Sequelize(conf.database.dbname, conf.database.username, conf.database.password)
     , db        = {}
 
 fs
