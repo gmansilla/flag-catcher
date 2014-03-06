@@ -22,5 +22,14 @@ exports.add = function(req, res) {
 }
 
 exports.lobby = function(req, res) {
-
+    db.Game.findAll({where: {isOver: 0, isRunning: 0}, include: [db.User]}).success(function(games) {
+        //util.inspect(console.log(games));
+        res.render(
+            'lobby', {
+                games: games,
+                title: 'Lobby',
+                //user:
+            }
+        )
+    });
 }
