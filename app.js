@@ -3,16 +3,20 @@
  * Module dependencies.
  */
 var flash = require('connect-flash');
-var users = require('./routes/users');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var express = require('express');
-var routes = require('./routes');
+var routes  = require('./routes')
 var users = require('./routes/users');
+var games = require('./routes/games');
 var http = require('http');
 var path = require('path');
 var util = require('util');
 var app = express();
+var db  = require('./models')
+
+
+
 
 // all environments
 app.set('port', process.env.PORT || 3000);
@@ -42,19 +46,7 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-//Sequelize model
-var usersModel = require('./models/user');
-var db = require('./database');
 
-usersModel.connect(db.configuration,
-    function(err) {
-        if (err) throw err;
-    }
-);
-users.configure({
-    users: usersModel,
-    passport: passport
-});
 
 //app.get('/', routes.index);
 app.get('/register', users.register);
@@ -67,7 +59,20 @@ app.post('/login', passport.authenticate('local', {
 }), users.postLogin);
 app.get('/logout',     users.doLogout);
 
+//LOBBY
+games.configure({passport: passport});
+app.get('/lobby', games.lobby);
+app.post('/creategame', games.add);
 
-http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
-});
+db
+    .sequelize
+    .sync() //{ force: true } will destroy and recreate everything
+    .complete(function(err) {
+        if (err) {
+            throw err
+        } else {
+            http.createServer(app).listen(app.get('port'), function(){
+                console.log('Express server listening on port ' + app.get('port'))
+            })
+        }
+    })

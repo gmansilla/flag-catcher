@@ -12,6 +12,7 @@
     "mysql": "2.0.0-alpha8",
     "connect-flash": "*",
     "passport": "*",
-    "passport-local": "*"
+    "passport-local": "*",
+    "loadash": "*"
   }
 }

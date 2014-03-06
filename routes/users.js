@@ -1,17 +1,21 @@
+var db = require('../models')
 var LocalStrategy = require('passport-local').Strategy;
-var users = undefined;
 var passport = undefined;
+var util = require('util');
+
+var users = undefined;
 exports.configure = function(params) {
-    users = params.users;
     passport = params.passport;
+    users = db.User;
 }
+
 
 module.exports.serialize = function(user, done) {
     done(null, user.id);
 }
 
 module.exports.deserialize = function(id, done) {
-    users.findById(id, function (err, user) {
+    db.User.findById(id, function (err, user) {
         done(err, user);
     });
 }
@@ -26,7 +30,10 @@ module.exports.strategy = new LocalStrategy(
             // username, or the password is not correct, set the user to `false` to
             // indicate failure and set a flash message. Otherwise, return the
             // authenticated `user`.
-            users.findByUsername(username, function(err, user) {
+
+
+            //util.inspect(console.log(db));
+            db.User.findByUsername(username, function(err, user) {
                 if (err) { return done(err); }
                 if (!user) { return done(null, false, { message: 'Unknown user ' + username }); }
                 if (user.password !== password) { return done(null, false, { message: 'Invalid password' }); }
@@ -81,18 +88,12 @@ exports.add = function(req, res) {
         email: req.body.email,
         password: req.body.password
     }
-    users.create(user, function(err) {
-       if (err) {
-           util.inspect(console.log(err));
-           res.render('register', {
-              title: "Register",
-              errors: err
-           });
-       } else {
-            res.render('login', {
-               title: 'Log in',
-               user: undefined
-            });
-       }
+    db.User.create(user).success(function(u) {
+        console.log('new user is '  + u.values);
+        res.render('login', {
+            title: 'Log in',
+            user: undefined
+        });
+
     });
 }

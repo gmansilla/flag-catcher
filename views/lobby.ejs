@@ -1,0 +1,21 @@
+<div id="rooms">
+    rooms
+    <% if (games == 'undefined') { %>
+        <b>There are no available games</b>
+    <% } else { %>
+        <% games.forEach(function(game, index) { %>
+            <div>
+                ID: <%= game.dataValues.id %> <br />
+                Created at: <%= game.dataValues.createdAt %> <br />
+                Users: <%= game.dataValues.users.length %> <br />
+                <a href="/joingame/<%= game.dataValues.id %>" >Join</a>
+            </div>
+            <br />
+
+        <%  }); %>
+
+    <% } %>
+</div>
+<form method="post" action="/creategame">
+    <input type="submit" value="Create Game">
+</form>
