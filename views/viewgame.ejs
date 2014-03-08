@@ -1,0 +1,15 @@
+<script src="/socket.io/socket.io.js"></script>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script src="/javascripts/game.js"></script>
+<div>
+    Creator ID: <%= game.UserId %>
+</div>
+<br />
+<div>
+    Players <br />
+    <% game.users.forEach(function(player, index) { %>
+        <%= player.dataValues.username %> <br />
+    <% }); %>
+</div>
+<% console.log(loggedUser) %> <br />

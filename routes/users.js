@@ -6,7 +6,6 @@ var util = require('util');
 var users = undefined;
 exports.configure = function(params) {
     passport = params.passport;
-    users = db.User;
 }
 
 

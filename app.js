@@ -13,7 +13,7 @@ var http = require('http');
 var path = require('path');
 var util = require('util');
 var app = express();
-var db  = require('./models')
+var db  = require('./models');
 
 
 
@@ -32,7 +32,8 @@ app.use(express.methodOverride());
 app.use(express.session({ secret: 'keyboard cat' }));
 // Initialize Passport! Also use passport.session() middleware,
 // to support persistent login sessions (recommended). app.use(flash());
-app.use(passport.initialize()); app.use(passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -64,6 +65,9 @@ games.configure({passport: passport});
 app.get('/lobby', games.lobby);
 app.post('/creategame', games.add);
 
+//GAME
+app.get('/viewgame/:id', games.viewgame);
+
 db
     .sequelize
     .sync() //{ force: true } will destroy and recreate everything
@@ -71,8 +75,14 @@ db
         if (err) {
             throw err
         } else {
-            http.createServer(app).listen(app.get('port'), function(){
+            /*http.createServer(app).listen(app.get('port'), function(){
                 console.log('Express server listening on port ' + app.get('port'))
-            })
+            })*/
+            var server = http.createServer(app).listen(app.get('port'), function(){
+                console.log('Express server listening on port ' + app.get('port'));
+            });
+            var socket = require('./routes/sockets.js');
+
+            socket.initialize(server,express.session);
         }
     })
