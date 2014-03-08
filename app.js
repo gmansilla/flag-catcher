@@ -83,6 +83,6 @@ db
             });
             var socket = require('./routes/sockets.js');
 
-            socket.initialize(server,express.session);
+            socket.initialize(server);
         }
     })
