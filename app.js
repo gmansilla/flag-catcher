@@ -29,7 +29,7 @@ app.use(express.bodyParser());
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
-app.use(express.session({ secret: 'keyboard cat' }));
+app.use(express.session({secret: 'secret', key: 'express.sid'}));
 // Initialize Passport! Also use passport.session() middleware,
 // to support persistent login sessions (recommended). app.use(flash());
 app.use(passport.initialize());
