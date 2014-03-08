@@ -5,6 +5,7 @@
 var flash = require('connect-flash');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var connect = require('connect')
 var express = require('express');
 var routes  = require('./routes')
 var users = require('./routes/users');
@@ -16,7 +17,8 @@ var app = express();
 var db  = require('./models');
 
 
-
+var cookieParser = express.cookieParser('secret')
+    , sessionStore = new connect.middleware.session.MemoryStore();
 
 // all environments
 app.set('port', process.env.PORT || 3000);
@@ -24,12 +26,12 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(express.favicon());
 app.use(express.logger('dev'));
-app.use(express.cookieParser());
+app.use(cookieParser);
 app.use(express.bodyParser());
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
-app.use(express.session({secret: 'secret', key: 'express.sid'}));
+app.use(express.session({secret: 'secret', key: 'express.sid', store: sessionStore}));
 // Initialize Passport! Also use passport.session() middleware,
 // to support persistent login sessions (recommended). app.use(flash());
 app.use(passport.initialize());
@@ -83,6 +85,6 @@ db
             });
             var socket = require('./routes/sockets.js');
 
-            socket.initialize(server);
+            socket.initialize(server, sessionStore, cookieParser);
         }
     })

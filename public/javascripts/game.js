@@ -1,10 +1,12 @@
 //var gameInfra = io.connect('/');
+var tick = io.connect('/');
 $(function() {
     /*gameInfra.on('message_received', function(message) {
        console.log(message);
     });*/
     //gameInfra.emit("user_connects");
-    tick = io.connect('/');
+
+    tick.emit('mensaje');
     tick.on('data', function (data) {
         console.log(data);
     });
