@@ -22,24 +22,16 @@ exports.initialize = function (server, sessionStore, cookieParser) {
             //check if signed with passport
             if (sessionStore.sessions[handshakeData.sessionID] !== undefined) {
                 var userPassport = JSON.parse(sessionStore.sessions[handshakeData.sessionID]);
-                //util.inspect(console.log(a.passport));
                 if (userPassport.passport.user === undefined) {
                     console.log('rejecting because passport is invalid');
                     return accept('passport is invalid.', false);
-                } else {
-                    console.log("passport is " + userPassport.passport.user);
-                }
+                } //else {
+                    //console.log("passport is " + userPassport.passport.user);
+                //}
             }
-
-
         } else {
-            // if there isn't, turn down the connection with a message
-            // and leave the function.
-            console.log('refusing');
             return accept('No cookie transmitted.', false);
         }
-
-        // accept the incoming connection
         accept(null, true);
     });
     var SessionSockets = require('session.socket.io')
@@ -49,9 +41,17 @@ exports.initialize = function (server, sessionStore, cookieParser) {
         //and you can still use your io object
         console.log('socket open');
         socket.on('mensaje', function(){
-            console.log('receveing mensaje');
-            //util.inspect(console.log(socket.handshake.headers));
-            //util.inspect(console.log(sessionStore.sessions));
+
+            //hack TODO: refactor this
+            var userCookie = socket.handshake.headers.cookie;
+            var i1 = userCookie.indexOf('express.sid=s%3')+16;
+            var i2 = userCookie.indexOf('.', i1);
+            var sessionKey = userCookie.substring(i1, i2);
+            var userSession = JSON.parse(sessionStore.sessions[sessionKey]);
+            var userId = userSession.passport.user;
+            //util.inspect(console.log(userSession.passport.user));
+            //endhack
+
         });
 
     });

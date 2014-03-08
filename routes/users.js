@@ -65,7 +65,8 @@ module.exports.doLogin = function(req, res){
 
 module.exports.postLogin = function(req, res) {
     //res.redirect('/');
-    res.redirect('/account');
+    //res.redirect('/account');
+    res.redirect('/viewgame/1');
 }
 
 module.exports.doLogout = function(req, res){
