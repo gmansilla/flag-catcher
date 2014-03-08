@@ -36,6 +36,7 @@ module.exports.strategy = new LocalStrategy(
                 if (err) { return done(err); }
                 if (!user) { return done(null, false, { message: 'Unknown user ' + username }); }
                 if (user.password !== password) { return done(null, false, { message: 'Invalid password' }); }
+                res.cookie('foo', 'bar');
                 return done(null, user);
             })
         });
