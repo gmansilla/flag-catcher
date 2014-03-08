@@ -17,7 +17,7 @@ var app = express();
 var db  = require('./models');
 
 
-var cookieParser = express.cookieParser('your secret sauce')
+var cookieParser = express.cookieParser('secret')
     , sessionStore = new connect.middleware.session.MemoryStore();
 
 // all environments
