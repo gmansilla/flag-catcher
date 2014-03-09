@@ -44,6 +44,14 @@ exports.initialize = function (server, sessionStore, cookieParser) {
             //util.inspect(console.log(userReader.getUserID(socket.handshake.headers.cookie, sessionStore)));
         });
 
+        socket.on('joingame', function(game) {
+            util.inspect(console.log(game.id));
+            //TODO check database and validate that this user is actually in the game
+            socket.set('userID', userReader.getUserID(socket.handshake.headers.cookie, sessionStore), function() {
+
+            });
+        });
+
     });
 
 
