@@ -3,7 +3,7 @@ var util = require('util');
 
 var cookie  =   require('cookie');
 var connect =   require('connect');
-
+var userReader = require('../utils/user_reader');
 
 
 exports.initialize = function (server, sessionStore, cookieParser) {
@@ -41,17 +41,7 @@ exports.initialize = function (server, sessionStore, cookieParser) {
         //and you can still use your io object
         console.log('socket open');
         socket.on('mensaje', function(){
-
-            //hack TODO: refactor this
-            var userCookie = socket.handshake.headers.cookie;
-            var i1 = userCookie.indexOf('express.sid=s%3')+16;
-            var i2 = userCookie.indexOf('.', i1);
-            var sessionKey = userCookie.substring(i1, i2);
-            var userSession = JSON.parse(sessionStore.sessions[sessionKey]);
-            var userId = userSession.passport.user;
-            //util.inspect(console.log(userSession.passport.user));
-            //endhack
-
+            //util.inspect(console.log(userReader.getUserID(socket.handshake.headers.cookie, sessionStore)));
         });
 
     });
