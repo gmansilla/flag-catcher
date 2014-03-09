@@ -10,11 +10,12 @@ exports.configure = function(params) {
 
 
 module.exports.serialize = function(user, done) {
-    done(null, user.id);
+    user.password = '****';
+    done(null, user);
 }
 
-module.exports.deserialize = function(id, done) {
-    db.User.findById(id, function (err, user) {
+module.exports.deserialize = function(u, done) {
+    db.User.findById(u.id, function (err, user) {
         done(err, user);
     });
 }

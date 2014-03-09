@@ -15,4 +15,9 @@ $(function() {
     socket.on('connect', function (){
         console.info('successfully established a working and authorized connection');
     });
+
+    socket.on('message', function(data) {
+        var data = JSON.parse(data);
+        $('#logs').append('<p>' + data.message + '</p>');
+    });
 });

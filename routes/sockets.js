@@ -40,15 +40,13 @@ exports.initialize = function (server, sessionStore, cookieParser) {
         //your regular socket.io code goes here
         //and you can still use your io object
         console.log('socket open');
-        socket.on('mensaje', function(){
-            //util.inspect(console.log(userReader.getUserID(socket.handshake.headers.cookie, sessionStore)));
-        });
 
         socket.on('joingame', function(game) {
             util.inspect(console.log(game.id));
             //TODO check database and validate that this user is actually in the game
-            socket.set('userID', userReader.getUserID(socket.handshake.headers.cookie, sessionStore), function() {
-
+            var user = userReader.getUser(socket.handshake.headers.cookie, sessionStore);
+            socket.set('user', user, function() {
+               socket.send(JSON.stringify({message: user.username + ' has joined the game'}));
             });
         });
 
