@@ -1,7 +1,7 @@
 var socket = io.connect('/');
 $(function() {
 
-    socket.emit('joingame', {id:gameID });
+    socket.emit('joingame', gameID );
 
 
     socket.on('data', function (data) {

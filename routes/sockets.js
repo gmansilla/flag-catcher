@@ -1,6 +1,6 @@
 var io = require('socket.io');
 var util = require('util');
-
+var db = require('../models');
 var cookie  =   require('cookie');
 var connect =   require('connect');
 var userReader = require('../utils/user_reader');
@@ -18,16 +18,14 @@ exports.initialize = function (server, sessionStore, cookieParser) {
                 // reject the handshake
                 return accept('Cookie is invalid.', false);
             }
-            //console.log('handshakeData.sessionID = ' + handshakeData.sessionID );
+
             //check if signed with passport
             if (sessionStore.sessions[handshakeData.sessionID] !== undefined) {
                 var userPassport = JSON.parse(sessionStore.sessions[handshakeData.sessionID]);
                 if (userPassport.passport.user === undefined) {
                     console.log('rejecting because passport is invalid');
                     return accept('passport is invalid.', false);
-                } //else {
-                    //console.log("passport is " + userPassport.passport.user);
-                //}
+                }
             }
         } else {
             return accept('No cookie transmitted.', false);
@@ -39,14 +37,17 @@ exports.initialize = function (server, sessionStore, cookieParser) {
     sessionSockets.on('connection', function (err, socket, session) {
         //your regular socket.io code goes here
         //and you can still use your io object
-        console.log('socket open');
 
-        socket.on('joingame', function(game) {
-            util.inspect(console.log(game.id));
-            //TODO check database and validate that this user is actually in the game
+        socket.on('joingame', function(gameId) {
             var user = userReader.getUser(socket.handshake.headers.cookie, sessionStore);
             socket.set('user', user, function() {
-               socket.send(JSON.stringify({message: user.username + ' has joined the game'}));
+                db.Game.find({where: {id: gameId, isOver: 0, isRunning: 0}, include: [db.User]})
+                    .success(function(game) {
+                        socket.room = gameId;
+                        socket.join(gameId);
+                        socket.in(socket.room).broadcast.send(JSON.stringify({message: user.username + ' has joined the game'}));
+                        socket.in(socket.room).send(JSON.stringify({message: user.username + ' has joined the game'}));
+                    }).error(function(err) {});
             });
         });
 

@@ -68,7 +68,7 @@ app.get('/lobby', games.lobby);
 app.post('/creategame', games.add);
 
 //GAME
-app.get('/viewgame/:id', games.viewgame);
+app.get('/viewgame/:id', users.ensureAuthenticated, games.viewgame);
 
 db
     .sequelize
