@@ -12,11 +12,14 @@ exports.add = function(req, res) {
         if (!err) {
             db.Game.create({}).success(function(game) {
                 game.setCreator(user).success(function() { //saves the owner
-                    game.setUsers([user]).success(function() { //saves the user in the join table
-                        //util.inspect(console.log(game));
-                        //res.redirect('/account');
-                        res.redirect('/viewgame/' + game.dataValues.id);
-                    })
+                    var gamesUser = {
+                        GameId: game.id,
+                        team: (Math.floor(Math.random() * 2) == 1 ? 'A' : 'B'),
+                        UserId: user.id
+                    }
+                    db.GamesUser.create(gamesUser).success(function() {
+                        res.redirect('/viewgame/' + game.id);
+                    });
                 })
             })
         }
@@ -43,7 +46,6 @@ exports.viewgame = function(req, res) {
             res.render(
                 'viewgame', {
                     game: game.dataValues,
-                    loggedUser: req.user
                 }
             );
         });

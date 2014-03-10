@@ -10,7 +10,7 @@ exports.configure = function(params) {
 
 
 module.exports.serialize = function(user, done) {
-    user.password = '****';
+    //user.password = '****';
     done(null, user);
 }
 
@@ -66,8 +66,8 @@ module.exports.doLogin = function(req, res){
 
 module.exports.postLogin = function(req, res) {
     //res.redirect('/');
-    //res.redirect('/account');
-    res.redirect('/viewgame/1');
+    res.redirect('/account');
+    //res.redirect('/viewgame/1');
 }
 
 module.exports.doLogout = function(req, res){
