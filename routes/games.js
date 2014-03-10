@@ -8,7 +8,7 @@ exports.configure = function(params) {
 }
 
 exports.add = function(req, res) {
-    db.User.findById(req.session.passport.user, function(err, user) {
+    db.User.findById(req.session.passport.user.id, function(err, user) {
         if (!err) {
             db.Game.create({}).success(function(game) {
                 game.setCreator(user).success(function() { //saves the owner
