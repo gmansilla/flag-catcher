@@ -1,4 +1,4 @@
-var db = require('../models')
+var db = require('../models');
 var passport = undefined;
 var util = require('util');
 
@@ -13,7 +13,9 @@ exports.add = function(req, res) {
             db.Game.create({}).success(function(game) {
                 game.setCreator(user).success(function() { //saves the owner
                     game.setUsers([user]).success(function() { //saves the user in the join table
-                        res.redirect('/account');
+                        //util.inspect(console.log(game));
+                        //res.redirect('/account');
+                        res.redirect('/viewgame/' + game.dataValues.id);
                     })
                 })
             })
@@ -32,4 +34,17 @@ exports.lobby = function(req, res) {
             }
         )
     });
+}
+
+exports.viewgame = function(req, res) {
+    db.Game.find({where: {id: req.params.id, isOver: 0, isRunning: 0},
+        include: [db.User]}).success(function(game) {
+
+            res.render(
+                'viewgame', {
+                    game: game.dataValues,
+                    loggedUser: req.user
+                }
+            );
+        });
 }

@@ -13,6 +13,10 @@
     "connect-flash": "*",
     "passport": "*",
     "passport-local": "*",
-    "loadash": "*"
+    "lodash": "*",
+    "redis": "*",
+    "connect": "*",
+    "connect-redis": "*",
+    "express-session": "*"
   }
 }
