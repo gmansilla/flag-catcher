@@ -26,7 +26,7 @@ module.exports = function(sequelize, DataTypes) {
         }
     }, {
         associate: function(models) {
-            User.hasMany(models.Game)
+            User.hasMany(models.Game, {through: models.GamesUser})
         },
         classMethods: {
             findByUsername: function(username, callback) {
