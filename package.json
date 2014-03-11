@@ -15,6 +15,9 @@
     "passport-local": "*",
     "lodash": "*",
     "redis": "*",
+    "socket.io":"0.9.14",
+    "session.socket.io":"*",
+    "cookie":"*",
     "connect": "*",
     "connect-redis": "*",
     "express-session": "*"
