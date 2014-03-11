@@ -68,6 +68,7 @@ app.get('/lobby', games.lobby);
 app.post('/creategame', games.add);
 
 //GAME
+app.get('/joingame/:id', users.ensureAuthenticated, games.joingame);
 app.get('/viewgame/:id', users.ensureAuthenticated, games.viewgame);
 
 db

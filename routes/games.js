@@ -50,3 +50,44 @@ exports.viewgame = function(req, res) {
             );
         });
 }
+
+exports.joingame = function(req, res) {
+    db.Game.find({ where: { id: req.params.id, isOver: 0, isRunning: 0}, include: [db.User]})
+        .success(function(game) {
+            if (!game) {
+                res.redirect('/lobby');
+            }
+            var teamA = 0;
+            var teamB = 0;
+            game.users.forEach(function(user) {
+                if (user.dataValues.id == req.session.passport.user.id) {
+                    res.render(
+                        'viewgame', {
+                            game: game.dataValues,
+                        }
+                    );
+                }
+                if (user.dataValues.gamesUser.dataValues.team == 'A') {
+                    teamA++;
+                } else if (user.dataValues.gamesUser.dataValues.team == 'B') {
+                    teamB++;
+                }
+                var gamesUser = {
+                    GameId: req.params.id,
+                    team: (teamB > teamA ? 'A' : 'B'),
+                    UserId: req.session.passport.user.id
+                }
+                db.GamesUser.create(gamesUser).success(function() {
+                    res.render(
+                        'viewgame', {
+                            game: game.dataValues,
+                        }
+                    );
+                });
+
+            });
+        }).error(function(err) {
+            res.redirect('/lobby');
+        });
+
+}
