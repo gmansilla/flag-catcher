@@ -52,6 +52,7 @@ exports.viewgame = function(req, res) {
 }
 
 exports.joingame = function(req, res) {
+    console.log('user ' + req.session.passport.user.id + ' is calling joinGame ' + req.params.id);
     db.Game.find({ where: { id: req.params.id, isOver: 0, isRunning: 0}, include: [db.User]})
         .success(function(game) {
             if (!game) {
@@ -66,25 +67,25 @@ exports.joingame = function(req, res) {
                             game: game.dataValues,
                         }
                     );
+                    return;
                 }
                 if (user.dataValues.gamesUser.dataValues.team == 'A') {
                     teamA++;
                 } else if (user.dataValues.gamesUser.dataValues.team == 'B') {
                     teamB++;
                 }
-                var gamesUser = {
-                    GameId: req.params.id,
-                    team: (teamB > teamA ? 'A' : 'B'),
-                    UserId: req.session.passport.user.id
-                }
-                db.GamesUser.create(gamesUser).success(function() {
-                    res.render(
-                        'viewgame', {
-                            game: game.dataValues,
-                        }
-                    );
-                });
-
+            });
+            var gamesUser = {
+                GameId: req.params.id,
+                team: (teamB > teamA ? 'A' : 'B'),
+                UserId: req.session.passport.user.id
+            }
+            db.GamesUser.create(gamesUser).success(function() {
+                res.render(
+                    'viewgame', {
+                        game: game.dataValues,
+                    }
+                );
             });
         }).error(function(err) {
             res.redirect('/lobby');
