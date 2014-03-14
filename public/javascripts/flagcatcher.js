@@ -1,3 +1,4 @@
+var socket = io.connect('/');
 var KEY = {
 UP: 87,
 DOWN: 83,
@@ -26,22 +27,6 @@ var player = {
 }
 
 var buttons;
-
-$(function() {
-	$(document).keydown(function(e){
-		flagcatcher.pressedKeys[e.which] = true;
-	});
-	
-	$(document).keyup(function(e){
-		flagcatcher.pressedKeys[e.which] = false;
-	});
-console.log("document ready");
-	loadStuff();
-
-	//setTimeout(hide, 700);
-	$("#playBtn").click(play);
-	$("#creditsBtn").click(viewCredits);
-});
 
 function animatePlayer(){
 	if(player.direction == "right")
@@ -189,72 +174,6 @@ function animatePlayer(){
 	}*/
 }			
 	
-	
-	
-/*	
-
-	if(enemies[i].alive == true)
-			{			
-				var text = "running";
-				if(i == 0)
-				{
-					//$("#enemy1").removeClass(text + enemies[i].step).addClass(text + enemies[i].step + 1);
-				}
-				//increment step
-				//enemies[i].step = enemies[i].step + 1;
-				//enemy1.step = enemy1.step + 1;
-				//$("#enemy1").addClass(text + enemies[i].step);
-
-				$("#enemy" + i ).removeClass(text + enemies[i].step);
-
-                if(enemies[i].step >= 13)
-                {
-                    enemies[i].step = 1;
-                }
-				enemies[i].step += 1;
-				
-				$("#enemy" + i).addClass(text + enemies[i].step);
-
-				
-				//console.log(text + enemies[i].step);
-			}
-			if(enemies[i].alive == false)
-			{			
-				var text = "dying";
-				if(i == 0)
-				{
-					//$("#enemy1").removeClass(text + enemies[i].step).addClass(text + enemies[i].step + 1);
-				}
-				//increment step
-				//enemies[i].step = enemies[i].step + 1;
-				//enemy1.step = enemy1.step + 1;
-				//$("#enemy1").addClass(text + enemies[i].step);
-				
-				$("#enemy" + i ).removeClass(text + enemies[i].step);
-
-                if(enemies[i].step >= 15)
-                {
-						enemies[i].alive = true;
-						enemies[i].left = 960;
-						
-                    	
-						//remove running class
-						$("#enemy" + i).removeClass("dyingEntire");
-						$("#enemy" + i).removeClass("dying" + enemies[i].step);
-						enemies[i].step = 1;
-						$("#enemy" + i).addClass("running" + enemies[i].step);
-						$("#enemy" + i).addClass("runningEntire");
-						//enemies[i].left += -5;
-                }
-				enemies[i].step += 1;
-				
-				$("#enemy" + i).addClass(text + enemies[i].step);
-
-				
-				//console.log(text + enemies[i].step);
-			}
-*/
-
 function movePlayer() {
 //use our custom timer to continuously check if a key is pressed
 	if(flagcatcher.pressedKeys[KEY.UP]) {// arrow-up
@@ -334,9 +253,7 @@ function movePlayer() {
 	}
 }
 
-function loadStuff()
-{
-	console.log("loadStuff");
+function loadStuff() {
 	$("#game").addClass("gameBackgroundMenu");
 }
 
@@ -376,3 +293,38 @@ function viewCredits()
 	viewingCredits = true;
 	viewingMenu = false;
 }
+
+$(function() {
+    socket.emit('joingame', gameID );
+
+
+    socket.on('data', function (data) {
+        console.log(data);
+    });
+
+    socket.on('error', function (reason){
+        console.error('Unable to connect Socket.IO', reason);
+    });
+
+    socket.on('connect', function (){
+        console.info('successfully established a working and authorized connection');
+    });
+
+    socket.on('message', function(data) {
+        var data = JSON.parse(data);
+        $('#logs').append('<p>' + data.message + '</p>');
+    });
+
+    $(document).keydown(function(e){
+        flagcatcher.pressedKeys[e.which] = true;
+    });
+
+    $(document).keyup(function(e){
+        flagcatcher.pressedKeys[e.which] = false;
+    });
+
+    loadStuff();
+
+    $("#playBtn").click(play);
+    //$("#creditsBtn").click(viewCredits);
+});

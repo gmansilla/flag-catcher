@@ -60,14 +60,10 @@ exports.joingame = function(req, res) {
             }
             var teamA = 0;
             var teamB = 0;
+            var userInRoom = false;
             game.users.forEach(function(user) {
                 if (user.dataValues.id == req.session.passport.user.id) {
-                    res.render(
-                        'viewgame', {
-                            game: game.dataValues,
-                        }
-                    );
-                    return;
+                    userInRoom = true;
                 }
                 if (user.dataValues.gamesUser.dataValues.team == 'A') {
                     teamA++;
@@ -75,18 +71,22 @@ exports.joingame = function(req, res) {
                     teamB++;
                 }
             });
-            var gamesUser = {
-                GameId: req.params.id,
-                team: (teamB > teamA ? 'A' : 'B'),
-                UserId: req.session.passport.user.id
+            if (userInRoom == false) {
+                var gamesUser = {
+                    GameId: req.params.id,
+                    team: (teamB > teamA ? 'A' : 'B'),
+                    UserId: req.session.passport.user.id
+                }
+                db.GamesUser.create(gamesUser).success(function() {
+                    res.render(
+                        'viewgame', {
+                            game: game.dataValues,
+                        }
+                    );
+                });
             }
-            db.GamesUser.create(gamesUser).success(function() {
-                res.render(
-                    'viewgame', {
-                        game: game.dataValues,
-                    }
-                );
-            });
+            res.redirect('/viewgame/' + req.params.id);
+
         }).error(function(err) {
             res.redirect('/lobby');
         });
