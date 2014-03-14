@@ -51,7 +51,7 @@ if ('development' == app.get('env')) {
 
 
 
-//app.get('/', routes.index);
+app.get('/', users.doLogin);
 app.get('/register', users.register);
 app.post('/usersadd', users.add);
 app.get('/account',    users.ensureAuthenticated, users.doAccount);
