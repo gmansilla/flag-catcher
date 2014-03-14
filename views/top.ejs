@@ -2,6 +2,8 @@
 <head>
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/flagCatcher.css' />
+
 </head>
 <body>
 <h1><%= title %></h1>
@@ -12,6 +14,5 @@
         | <a href='/logout'>Log Out</a>
         | logged in as <a href='/account'><%= user.username %></a>
         <% } else { %>
-        | <a href='/login'>Log in</a>
-        <% } %> </p>
+                 <% } %> </p>
 </div>
