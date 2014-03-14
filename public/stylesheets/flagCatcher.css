@@ -1,0 +1,105 @@
+body {
+	font-family: 'Audiowide', serif;
+	font-size: 48px;
+	text-shadow: 4px 4px 4px #aaa;
+	text-align: center;	
+	background: #aaa url(../images/bg.jpg);
+	color:#663553;
+}
+.button{
+	border-radius: 10px;
+	border: 3px solid #773333;
+	width: 170px;
+	height: 25px;
+	
+}
+#playBtn{
+	border: 3px solid #773333;
+	background: #aaa url(../images/play.png);
+	
+	top: 370px;
+	left: 30%;
+	position: relative;
+}
+#creditsBtn{
+	background: #aaa url(../images/credits.png);
+	top: 339px;
+	left: 51%;
+	position: relative;
+}
+#title{
+	border: 3px solid #773333;
+	background: #aaa url(../images/title.png);
+	width: 430px;
+	height: 170px;
+	
+	left: 275px;
+	top: 60px;
+	position: relative;
+}
+.scoreClass{
+	height: 10px;
+	position: relative;
+	left: -35%;
+}
+.gameBackgroundMenu{
+	background: #955 url(../images/intro.png);
+}
+.gameBackgroundPlay{
+	background: #955 url(../images/background.png);
+}
+#game {
+	border-radius: 10px;
+	border: 3px solid #773333;
+	-webkit-box-shadow: 0 -1px 0 #999, 0 1px 0 #999, inset 0 1px 6px #000;
+	width: 1000px;
+	height: 600px;
+	margin: 0 auto;	
+}
+#player{
+	width: 17px;
+	height: 37px;
+	position: relative;
+	top: 100px;
+	left: 100px;
+}
+.leftEntire {
+background: url(../images/left.png);
+border: 3px #999;
+width: 15px;
+height: 37px;
+}
+.rightEntire {
+background: url(../images/right.png);
+border: 3px #999;
+width: 17px;
+height: 37px;
+}
+.upEntire {
+background: url(../images/up.png);
+border: 3px #999;
+width: 17px;
+height: 37px;
+}
+.downEntire {
+background: url(../images/down.png);
+border: 3px #999;
+width: 17px;
+height: 37px;
+}
+.standingEntire {
+background: url(../images/down.png);
+border: 3px #999;
+width: 17px;
+height: 37px;
+}
+
+
+.standing1{background-position: 0 0;}
+
+.frames1{background-position: 0 0;}
+.frames2{background-position: -17px 0;}
+.frames3{background-position: -34px 0;}
+.frames4{background-position: -51px 0;}
+.frames5{background-position: -68px 0;}
+
