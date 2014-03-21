@@ -18,7 +18,7 @@ flagcatcher.player = {
 	y: 100
 }
 
-var player = {
+var player1 = {
 	direction: "left", // Possible directions: "standing", "left", "right", "up", "down"
 	prevDirection: "nothing",
 	lives: 3,
@@ -28,66 +28,69 @@ var player = {
 
 var buttons;
 
-function animatePlayer() {
-	if(player.direction == "right")
+function animatePlayer(){
+	game.users.forEach(function(user){
+	console.log(user.id);
+	
+	if(user.direction == "right")
 	{
 		var text = "frames";
-		$("#player").addClass(player.direction + "Entire");
+		$("#player" + user.id).addClass(user.direction + "Entire");
 		
-		if(player.prevDirection != "right")
+		if(user.prevDirection != "right")
 		{
-			$("#player").css("width", 17);
+			$("#player" + user.id).css("width", 17);
 			//remove running class
-			$("#player").removeClass(player.prevDirection + "Entire");
-			$("#player").removeClass(player.prevDirection + "" + player.step);
-			player.step = 0;
-			player.prevDirection = player.direction;
+			$("#player" + user.id).removeClass(user.prevDirection + "Entire");
+			$("#player" + user.id).removeClass(user.prevDirection + "" + user.step);
+			user.step = 0;
+			user.prevDirection = user.direction;
 		}
 		else{
-			$("#player").removeClass(text + player.step);
+			$("#player" + user.id).removeClass(text + user.step);
 		}
-			$("#player").addClass(player.direction + "Entire");
-			player.step += 1;
+			$("#player" + user.id).addClass(user.direction + "Entire");
+			user.step += 1;
 			
-			if(player.step > 5)
+			if(user.step > 5)
             {
-                player.step = 1;
+                user.step = 1;
             }
 			
-			$("#player").addClass(text + player.step);
+			$("#player" + user.id).addClass(text + user.step);
 	}
 
 	
 	
 	
-	if(player.direction == "left")
+	if(user.direction == "left")
 	{
 		var text = "frames";
-		$("#player").addClass(player.direction + "Entire");
+		$("#player" + user.id).addClass(user.direction + "Entire");
 		
-		if(player.prevDirection != "left")
+		if(user.prevDirection != "left")
 		{
-			$("#player").css("width", 17);	
+			$("#player" + user.id).css("width", 17);	
 			//remove running class
-			$("#player").removeClass(player.prevDirection + "Entire");
-			$("#player").removeClass(player.prevDirection + "" + player.step);
-			player.step = 0;
-			player.prevDirection = player.direction;
+			$("#player" + user.id).removeClass(user.prevDirection + "Entire");
+			$("#player" + user.id).removeClass(user.prevDirection + "" + user.step);
+			user.step = 0;
+			user.prevDirection = user.direction;
 		}	
 		else{
-			$("#player").removeClass(text + player.step);
+			$("#player" + user.id).removeClass(text + user.step);
 		}
-			$("#player").addClass(player.direction + "Entire");
-			player.step += 1;
+			$("#player" + user.id).addClass(user.direction + "Entire");
+			user.step += 1;
 			
-			if(player.step > 5)
+			if(user.step > 5)
             {
-                player.step = 1;
+                user.step = 1;
             }
 			
-			$("#player").addClass(text + player.step);
-			console.log(player.step);
-			console.log( $("#player").css("width"));
+			$("#player" + user.id).addClass(text + user.step);
+			console.log(user.step);
+			console.log( $("#player" + user.id).css("width"));
 	}
 	
 	
@@ -97,60 +100,60 @@ function animatePlayer() {
 	
 	
 	
-	if(player.direction == "up")
+	if(user.direction == "up")
 	{
 		var text = "frames";
-		$("#player").addClass(player.direction + "Entire");
+		$("#player" + user.id).addClass(user.direction + "Entire");
 		
-		if(player.prevDirection != "up")
+		if(user.prevDirection != "up")
 		{
-			$("#player").css("width", 17);
+			$("#player" + user.id).css("width", 17);
 			//remove running class
-			$("#player").removeClass(player.prevDirection + "Entire");
-			$("#player").removeClass(player.prevDirection + "" + player.step);
-			player.step = 0;
-			player.prevDirection = player.direction;
+			$("#player" + user.id).removeClass(user.prevDirection + "Entire");
+			$("#player" + user.id).removeClass(user.prevDirection + "" + user.step);
+			user.step = 0;
+			user.prevDirection = user.direction;
 		}	
 		else{
-			$("#player").removeClass(text + player.step);
+			$("#player" + user.id).removeClass(text + user.step);
 		}
-			$("#player").addClass(player.direction + "Entire");
-			player.step += 1;
+			$("#player" + user.id).addClass(user.direction + "Entire");
+			user.step += 1;
 			
-			if(player.step > 5)
+			if(user.step > 5)
             {
-                player.step = 1;
+                user.step = 1;
             }
 			
-			$("#player").addClass(text + player.step);
+			$("#player" + user.id).addClass(text + user.step);
 	}
 	
-	if(player.direction == "down")
+	if(user.direction == "down")
 	{
 		var text = "frames";
-		$("#player").addClass(player.direction + "Entire");
+		$("#player" + user.id).addClass(user.direction + "Entire");
 		
-		if(player.prevDirection != "down")
+		if(user.prevDirection != "down")
 		{
-			$("#player").css("width", 17);	
+			$("#player" + user.id).css("width", 17);	
 			//remove running class
-			$("#player").removeClass(player.prevDirection + "Entire");
-			$("#player").removeClass(player.prevDirection + "" + player.step);
-			player.step = 0;
-			player.prevDirection = player.direction;
+			$("#player" + user.id).removeClass(user.prevDirection + "Entire");
+			$("#player" + user.id).removeClass(user.prevDirection + "" + user.step);
+			user.step = 0;
+			user.prevDirection = user.direction;
 		}	
 		else{
-			$("#player").removeClass(text + player.step);
+			$("#player" + user.id).removeClass(text + user.step);
 		}
-			$("#player").addClass(player.direction + "Entire");
-			player.step += 1;
+			$("#player" + user.id).addClass(user.direction + "Entire");
+			user.step += 1;
 			
-			if(player.step > 5)
+			if(user.step > 5)
             {
-                player.step = 1;
+                user.step = 1;
             }
 			
-			$("#player").addClass(text + player.step);
+			$("#player" + user.id).addClass(text + user.step);
 	}
 	/*
 	if(player.direction == "standing")
@@ -172,61 +175,67 @@ function animatePlayer() {
 			player.step = 1;
 			$("#player").addClass(text + player.step);
 	}*/
+	})
 }			
 	
+
+	
+
+
 function movePlayer() {
-//use our custom timer to continuously check if a key is pressed
+	game.users.forEach(function(user){
+	//use our custom timer to continuously check if a key is pressed
 	if(flagcatcher.pressedKeys[KEY.UP]) {// arrow-up
 		//Change direction
-		player.direction = "up";
+		user.direction = "up";
 		
 		//move the paddle B up 5 pixels
-		var top = parseInt($("#player").css("top"));
+		var top = parseInt($("#player" + user.id).css("top"));
 		
 		if(top-5 < 0)
 		{
 			top = 0;
-			$("#player").css("top", top);
+			$("#player" + user.id).css("top", top);
 		}
 		else{
-			$("#player").css("top", top-5);
+			$("#player" + user.id).css("top", top-5);
 		}
 		//socket.emit('walkup', )
 	}
+	
 	if(flagcatcher.pressedKeys[KEY.DOWN]) { //arrow-down
 	
 		//Change direction
-		player.direction = "down";
+		user.direction = "down";
 		
 		//move the paddle B down 5 pixels
-		var top = parseInt($("#player").css("top"));
+		var top = parseInt($("#player" + user.id).css("top"));
 		
-		if(top + 5 > parseInt($("#game").css("height")) - parseInt($("#player").css("height")))
+		if(top + 5 > parseInt($("#game").css("height")) - parseInt($("#player" + user.id).css("height")))
 		{
-			top = parseInt($("#game").css("height")) - parseInt($("#player").css("height"));
-			$("#player").css("top", top);
+			top = parseInt($("#game").css("height")) - parseInt($("#player" + user.id).css("height"));
+			$("#player" + user.id).css("top", top);
 		}
 		else{
-			$("#player").css("top", top + 5);
-		}
-		
-		
+			$("#player" + user.id).css("top", top + 5);
+		}	
 	}
+	
 	if(flagcatcher.pressedKeys[KEY.LEFT]) { //w
 		//move the paddle A up 5 pixels
 		
 		//Change direction
-		player.direction = "left";
+		user.direction = "left";
 		
-		var left = parseInt($("#player").css("left"));
+		var left = parseInt($("#player" + user.id).css("left"));
 		
 		if(left - 5 < 0)
 		{
 			left = 0;
-			$("#player").css("left", left);
+			$("#player" + user.id).css("left", left);
 		}
 		else{
-			$("#player").css("left", left-5);
+			$("#player" + user.id).css("left", left-5);
 		}
 		
 		
@@ -235,25 +244,30 @@ function movePlayer() {
 		//move the paddle A down 5 pixels
 		
 		//Change direction
-		player.direction = "right";
+		user.direction = "right";
 		
-		var left = parseInt($("#player").css("left"));
+		var left = parseInt($("#player" + user.id).css("left"));
 		
-		if(left + 5 > parseInt($("#game").css("width")) - parseInt($("#player").css("width")))
+		if(left + 5 > parseInt($("#game").css("width")) - parseInt($("#player" + user.id).css("width")))
 		{
-			left = parseInt($("#game").css("width")) - parseInt($("#player").css("width"));
-			$("#player").css("left", left);
+			left = parseInt($("#game").css("width")) - parseInt($("#player" + user.id).css("width"));
+			$("#player" + user.id).css("left", left);
 		}
 		else{
-			$("#player").css("left", left + 5);
+			$("#player" + user.id).css("left", left + 5);
 		}
 	}
 	if(!(flagcatcher.pressedKeys[KEY.RIGHT]) || (flagcatcher.pressedKeys[KEY.LEFT]) || (flagcatcher.pressedKeys[KEY.UP]) || (flagcatcher.pressedKeys[KEY.DOWN])  ){
 		//player.direction = "standing";
 	}
+	})
 }
 
+
+
+
 function loadStuff() {
+
 	$("#game").addClass("gameBackgroundMenu");
 }
 
