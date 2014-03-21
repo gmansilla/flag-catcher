@@ -63,20 +63,21 @@ exports.initialize = function (server, sessionStore, cookieParser) {
         socket.on('requeststartgame', function(room) {
             console.log('requeststartgame in game  ' + room);
             var user = userReader.getUser(socket.handshake.headers.cookie, sessionStore);
-            console.log('user asking this is: ');
-            util.inspect(console.log(user));
-            //check if user calling this is the owner of the game
-            if (games[room].owner == user.id) { //yes he is the owner
-                games[room].isRunning = 1;
-
-                socket.in(room).broadcast.emit('startgame', games[room] );
-                socket.in(room).emit('startgame', games[room]);
-
-            }
-
-
+            socket.get('user', function(err, user) {
+                //check if user calling this is the owner of the game
+                if (games[room].owner == user.id) { //yes he is the owner
+                    games[room].isRunning = 1;
+                    socket.in(room).broadcast.emit('startgame', games[room] );
+                    socket.in(room).emit('startgame', games[room]);
+                }
+            });
 
         });
+
+        socket.on('move', function(direction) {
+
+        });
+
     });
 };
 

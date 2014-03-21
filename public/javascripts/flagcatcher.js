@@ -282,8 +282,6 @@ $(function () {
     });
 
     socket.on('startgame', function (newGame) {
-        //console.log('receiving startgame event with this info');
-        //console.log(game);
         game = newGame;
         $("#game").removeClass("gameBackgroundMenu");
         $("#game").addClass("gameBackgroundPlay");
@@ -306,9 +304,8 @@ $(function () {
 
     $("#playBtn").click(function () {
         socket.emit('requeststartgame', gameID);
-
     });
-    s
+
     //$("#creditsBtn").click(viewCredits);
 
 
