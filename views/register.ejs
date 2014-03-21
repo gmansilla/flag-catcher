@@ -1,24 +1,37 @@
 <% include top %>
+<section id="game">
+<h1><%= title %> </h1>
+<div id="title3"> </div>
+<div id="userInfo2">
 <form action="/usersadd" method="post">
     <label for="username">Username</label>
     <input type="text" name="username">
     <% if (typeof(errors) !== 'undefined' && typeof(errors.username) !== 'undefined') { %>
         <%= errors.username[0] %>
     <% } %>
+<br>
     <br>
-
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <label for="username">Email</label>
     <input type="email" name="email">
+<br>
     <br>
 
     <label for="username">Password</label>
     <input type="password" name="password">
     <br>
+<br>
 
     <label for="username">Confirm Password</label>
-    <input type="password" name="password-confirm">
-    <br>
 
-    <input type="submit" value="Submit">
+    <input type="password" name="password-confirm">
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp; <br>
+<br>
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+<input class="button" type="image" src="images\submit.png" value="Submit"alt='Submit'/>
 </form>
+</div>
+</section>
+
 <% include bottom %>

@@ -1,73 +1,4 @@
-var user1 = {
-	id: 1,
-	username: "toby",
-	direction: "left", // Possible directions: "standing", "left", "right", "up", "down"
-	prevDirection: "nothing",
-	lives: 3,
-	mines: 2,
-	energy: 100,
-	x: 100,
-	y: 100,
-	step: 1,
-	team: "b"
-}
-
-var user2 = {
-	id: 2,
-	username: "yi",
-	direction: "right", // Possible directions: "standing", "left", "right", "up", "down"
-	prevDirection: "nothing",
-	lives: 3,
-	mines: 2,
-	energy: 100,
-	x: 300,
-	y: 100,
-	step: 1,
-	team: "a"
-}
-
-
-var mine1 = {
-	x: 200,
-	y: 200,
-	team: "blue",
-	owner: null
-}
-var mine2 = {
-	x: 200,
-	y: 600,
-	team: "red",
-	owner: null
-}
-
-var flag1 = {
-	x: 100,
-	y: 100,
-	team: "red",
-	carrier: null
-}
-var flag2 = {
-	x: 100,
-	y: 500,
-	team: "blue",
-	carrier: null
-}
-
-var game = {
-	id: 1,
-	users: [user1, user2],
-	mines: [mine1, mine2],
-	flag: [flag1, flag2],
-	scoreA: 0,
-	scoreB: 0,
-	timeLeft: 300
-}
-
-//function fillGameObject(){
-//
-//}
-
-
+var socket = io.connect('/');
 var KEY = {
 UP: 87,
 DOWN: 83,
@@ -94,31 +25,8 @@ var player1 = {
 	power: 100,
 	step: 1
 }
-var player2 = {
-	direction: "left", // Possible directions: "standing", "left", "right", "up", "down"
-	prevDirection: "nothing",
-	lives: 3,
-	power: 100,
-	step: 1
-}
 
 var buttons;
-
-$(function() {
-	$(document).keydown(function(e){
-		flagcatcher.pressedKeys[e.which] = true;
-	});
-	
-	$(document).keyup(function(e){
-		flagcatcher.pressedKeys[e.which] = false;
-	});
-
-	loadStuff();
-
-	//setTimeout(hide, 700);
-	$("#playBtn").click(play);
-	$("#creditsBtn").click(viewCredits);
-});
 
 function animatePlayer(){
 	game.users.forEach(function(user){
@@ -270,6 +178,7 @@ function animatePlayer(){
 	})
 }			
 	
+
 	
 
 
@@ -354,8 +263,11 @@ function movePlayer() {
 	})
 }
 
-function loadStuff()
-{
+
+
+
+function loadStuff() {
+
 	$("#game").addClass("gameBackgroundMenu");
 }
 
@@ -395,3 +307,38 @@ function viewCredits()
 	viewingCredits = true;
 	viewingMenu = false;
 }
+
+$(function() {
+    socket.emit('joingame', gameID );
+
+
+    socket.on('data', function (data) {
+        console.log(data);
+    });
+
+    socket.on('error', function (reason){
+        console.error('Unable to connect Socket.IO', reason);
+    });
+
+    socket.on('connect', function (){
+        console.info('successfully established a working and authorized connection');
+    });
+
+    socket.on('message', function(data) {
+        var data = JSON.parse(data);
+        $('#logs').append('<p>' + data.message + '</p>');
+    });
+
+    $(document).keydown(function(e){
+        flagcatcher.pressedKeys[e.which] = true;
+    });
+
+    $(document).keyup(function(e){
+        flagcatcher.pressedKeys[e.which] = false;
+    });
+
+    loadStuff();
+
+    $("#playBtn").click(play);
+    //$("#creditsBtn").click(viewCredits);
+});
