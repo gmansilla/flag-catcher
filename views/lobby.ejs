@@ -1,16 +1,46 @@
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/flagCatcher.css' />
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="/javascripts/flagcatcher.js"></script>
+		<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+
+</head>
+<body>
+
+<section id="game" class="gameBackgroundMenu">
+<div id="title"></div>
+<div id="userinfo">
 <div id="rooms">
+
     rooms
     <% if (games == 'undefined') { %>
         <b>There are no available games</b>
     <% } else { %>
         <% games.forEach(function(game, index) { %>
             <div>
-                ID: <%= game.dataValues.id %> <br />
-                Created at: <%= game.dataValues.createdAt %> <br />
-                Users: <%= game.dataValues.users.length %> <br />
-                <a href="/joingame/<%= game.dataValues.id %>" >Join</a>
-            </div>
-            <br />
+<table align="center">
+<tr>
+<td>
+    ID:  <%= game.dataValues.id %> 
+</td>
+<td>
+ Created at: <%= game.dataValues.createdAt %>
+</td>
+<td>
+   Players: <%= game.dataValues.users.length %> 
+</td>
+<td>
+  <a href="/joingame/<%= game.dataValues.id %>" >Join</a>
+</td>
+</tr>
+</table>
+
+
+
+
 
         <%  }); %>
 
@@ -19,3 +49,6 @@
 <form method="post" action="/creategame">
     <input type="submit" value="Create Game">
 </form>
+</div>
+</section>
+
