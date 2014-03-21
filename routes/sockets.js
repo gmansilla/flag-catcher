@@ -4,6 +4,7 @@ var db = require('../models');
 var cookie  =   require('cookie');
 var connect =   require('connect');
 var userReader = require('../utils/user_reader');
+var gameSettings = require('../settings');
 var games = {};
 
 exports.initialize = function (server, sessionStore, cookieParser) {
@@ -41,73 +42,75 @@ exports.initialize = function (server, sessionStore, cookieParser) {
         socket.on('joingame', function(gameId) {
             var user = userReader.getUser(socket.handshake.headers.cookie, sessionStore);
             socket.set('user', user, function() {
-                db.Game.find({where: {id: gameId, isOver: 0, isRunning: 0}, include: [db.User]})
+                db.Game.find({where: {id: gameId, isOver: 0, isRunning: 0}, include: [db.GamesUser]})
                     .success(function(game) {
-                        socket.room = gameId;
-                        socket.join(gameId);
-                        socket.in(socket.room).broadcast.send(JSON.stringify({message: user.username + ' has joined the game'}));
-                        socket.in(socket.room).send(JSON.stringify({message: user.username + ' has joined the game'}));
-                        userJoin(socket);
+                        //console.log('gameInf');
+                        //util.inspect(console.log(game.gamesUsers));
+                        game.gamesUsers.forEach(function(gameUser){
+                           if (gameUser.dataValues.UserId == user.id) {
+                               socket.room = gameId;
+                               socket.join(gameId);
+                               socket.in(socket.room).broadcast.send(JSON.stringify({message: user.username + ' has joined the game'}));
+                               socket.in(socket.room).send(JSON.stringify({message: user.username + ' has joined the game'}));
+                               socket.set('team', gameUser.dataValues.team, function() {});
+                               userJoin(user, socket.room, gameUser.dataValues.team);
+                           }
+                        });
                     }).error(function(err) {});
             });
         });
 
         socket.on('startgame', function() {
             //check if user calling this is the owner of the game
-
         });
-
     });
-
-
-
 };
 
-function userJoin(socket) {
-    socket.get('user', function(err, user) {
-        if (games[socket.room] == undefined) {
-            user.x = 100;
-            user.y = 200;
-            user.lives = 2;
-            user.energy = 100;
-
-            var flag1 = {
-                x: 0,
-                y: 20,
-                team: 'B',
-                carrier: null
-            }
-
-            var flag2 = {
-                x: 500,
-                y: 970,
-                team: 'A',
-                carrier: null
-            }
-
-            games[socket.room] = {
-                id: socket.room,
-                users: [],
-                mines: [],
-                flag: [flag1, flag2],
-                scoreA: 0,
-                scoreB: 0,
-                timeLeft: 180000
-            }
-
-        } else {
-
+function userJoin(user, room, team) {
+    var positionX, positionY, min;
+    if (games[room] == undefined) {
+        var flag1 = {
+            x: gameSettings.options.flag1.x,
+            y: gameSettings.options.flag1.y,
+            team: 'B',
+            carrier: null
         }
 
+        var flag2 = {
+            x: gameSettings.options.flag2.x,
+            y: gameSettings.options.flag2.y,
+            team: 'A',
+            carrier: null
+        }
 
+        games[room] = {
+            id: room,
+            users: [],
+            mines: [],
+            flag: [flag1, flag2],
+            scoreA: 0,
+            scoreB: 0,
+            timeLeft: gameSettings.options.time
+        }
 
+    }
 
-        games[socket.room].users.push(user);
-        console.log('user info is:');
-        util.inspect(console.log(games[socket.room]));
-
-    });
-
+    if (team == 'A') {
+        positionX = Math.floor(Math.random() * ((gameSettings.options.fieldWidth / 2) - 6)) + 5;
+    } else if (team == 'B') {
+        min = (gameSettings.options.fieldWidth / 2 + 5);
+        positionX = Math.floor(Math.random() * (gameSettings.options.fieldWidth - min + 1)) + min;
+    }
+    min = 5;
+    positionY = Math.floor(Math.random() * (gameSettings.options.fieldHeight - min + 1)) + min;
+    user.x = positionX;
+    user.y = positionY;
+    user.lives = gameSettings.options.lifes;
+    user.energy = gameSettings.options.energy;
+    user.mines = gameSettings.options.mines;
+    user.team = team;
+    games[room].users.push(user);
+    console.log('game data so far: ');
+    util.inspect(console.log(games[room]));
 
 }
-

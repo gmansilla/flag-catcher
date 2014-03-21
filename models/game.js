@@ -15,6 +15,7 @@ module.exports = function(sequelize, DataTypes) {
     }, {
         associate: function(models) {
             Game.hasMany(models.User,{through: models.GamesUser})
+            Game.hasMany(models.GamesUser)
             Game.belongsTo(models.User, {as: 'Creator'})
         }
     })
