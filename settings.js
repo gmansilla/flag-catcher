@@ -4,7 +4,7 @@ module.exports = {
         energy: 100,
         lifes: 2,
         mines: 2,
-        fieldWidth: 1000,
+        fieldWidth: 980,
         fieldHeight: 600,
         flag1: {
             x: 0,

@@ -1,4 +1,10 @@
 var socket = io.connect('/');
+
+
+
+
+var game;
+
 var KEY = {
 UP: 87,
 DOWN: 83,
@@ -30,7 +36,7 @@ var buttons;
 
 function animatePlayer(){
 	game.users.forEach(function(user){
-	console.log(user.id);
+	    //console.log(user.id);
 	
 	if(user.direction == "right")
 	{
@@ -89,8 +95,8 @@ function animatePlayer(){
             }
 			
 			$("#player" + user.id).addClass(text + user.step);
-			console.log(user.step);
-			console.log( $("#player" + user.id).css("width"));
+			//console.log(user.step);
+			//console.log( $("#player" + user.id).css("width"));
 	}
 	
 	
@@ -271,31 +277,6 @@ function loadStuff() {
 	$("#game").addClass("gameBackgroundMenu");
 }
 
-function play()
-{		
-	$("#game").removeClass("gameBackgroundMenu");
-	$("#game").addClass("gameBackgroundPlay");
-	
-	$("#score").addClass("scoreClass");
-	
-	/*
-	setTimeout(function()
-	{
-		$("#score").text(scoreText + score);
-	}, 1000);
-	*/
-	
-		//= parseInt($("#playground").height());
-	$("#title").fadeOut(800);
-	$(".button").fadeOut(1000);   //addClass("hide");
-	
-	viewingMenu = false;
-	playing = true;
-	
-	//Game Loop
-    setInterval(gameloop, 60);
-	}
-	
 function gameloop(){
 	movePlayer();
 	animatePlayer();
@@ -321,7 +302,7 @@ $(function() {
     });
 
     socket.on('connect', function (){
-        console.info('successfully established a working and authorized connection');
+        console.log('successfully established a working and authorized connection');
     });
 
     socket.on('message', function(data) {
@@ -337,12 +318,36 @@ $(function() {
         flagcatcher.pressedKeys[e.which] = false;
     });
 
-    socket.on('startgame', function(game) {
+    socket.on('startgame', function(newGame) {
+        //console.log('receiving startgame event with this info');
+        //console.log(game);
+        game = newGame;
+        $("#game").removeClass("gameBackgroundMenu");
+        $("#game").addClass("gameBackgroundPlay");
 
+        $("#score").addClass("scoreClass");
+        $("#title").fadeOut(800);
+        $(".button").fadeOut(1000);
+        viewingMenu = false;
+        playing = true;
+
+        game.users.forEach(function(user) {
+            $('<div id="player' + user.id + '" class="player" style="top:' + user.y + 'px; left: ' + user.x + 'px"></div>').appendTo($('#game'));
+        });
+
+        setInterval(gameloop, 60);
     });
+
+
 
     loadStuff();
 
-    $("#playBtn").click(play);
+    $("#playBtn").click(function() {
+        socket.emit('requeststartgame', gameID);
+
+    });
+    s
     //$("#creditsBtn").click(viewCredits);
+
+
 });

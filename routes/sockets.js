@@ -60,8 +60,22 @@ exports.initialize = function (server, sessionStore, cookieParser) {
             });
         });
 
-        socket.on('startgame', function() {
+        socket.on('requeststartgame', function(room) {
+            console.log('requeststartgame in game  ' + room);
+            var user = userReader.getUser(socket.handshake.headers.cookie, sessionStore);
+            console.log('user asking this is: ');
+            util.inspect(console.log(user));
             //check if user calling this is the owner of the game
+            if (games[room].owner == user.id) { //yes he is the owner
+                games[room].isRunning = 1;
+
+                socket.in(room).broadcast.emit('startgame', games[room] );
+                socket.in(room).emit('startgame', games[room]);
+
+            }
+
+
+
         });
     });
 };
@@ -90,7 +104,9 @@ function userJoin(user, room, team) {
             flag: [flag1, flag2],
             scoreA: 0,
             scoreB: 0,
-            timeLeft: gameSettings.options.time
+            timeLeft: gameSettings.options.time,
+            owner: user.id,
+            isRunning: 0
         }
 
     }
@@ -108,6 +124,10 @@ function userJoin(user, room, team) {
     user.lives = gameSettings.options.lifes;
     user.energy = gameSettings.options.energy;
     user.mines = gameSettings.options.mines;
+    user.direction = 'left';
+    user.prevDirection = 'nothing';
+    user.step = 1;
+
     user.team = team;
     games[room].users.push(user);
     console.log('game data so far: ');
