@@ -46,6 +46,7 @@ exports.viewgame = function(req, res) {
             res.render(
                 'viewgame', {
                     game: game.dataValues,
+                    user: req.session.passport.user
                 }
             );
         });

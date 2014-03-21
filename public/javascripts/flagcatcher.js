@@ -5,6 +5,7 @@ var socket = io.connect('/');
 
 var game;
 
+
 var KEY = {
 UP: 87,
 DOWN: 83,
@@ -34,7 +35,7 @@ var player1 = {
 
 var buttons;
 
-function animatePlayer(){
+function animatePlayer() {
 	game.users.forEach(function(user){
 	    //console.log(user.id);
 	
@@ -189,7 +190,7 @@ function animatePlayer(){
 
 
 function movePlayer() {
-	game.users.forEach(function(user){
+
 	//use our custom timer to continuously check if a key is pressed
 	if(flagcatcher.pressedKeys[KEY.UP]) {// arrow-up
 		//Change direction
@@ -266,7 +267,7 @@ function movePlayer() {
 	if(!(flagcatcher.pressedKeys[KEY.RIGHT]) || (flagcatcher.pressedKeys[KEY.LEFT]) || (flagcatcher.pressedKeys[KEY.UP]) || (flagcatcher.pressedKeys[KEY.DOWN])  ){
 		//player.direction = "standing";
 	}
-	})
+	
 }
 
 
@@ -290,6 +291,7 @@ function viewCredits()
 }
 
 $(function() {
+
     socket.emit('joingame', gameID );
 
 
