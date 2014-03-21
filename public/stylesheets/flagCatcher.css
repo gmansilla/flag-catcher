@@ -56,12 +56,23 @@ body {
 	height: 600px;
 	margin: 0 auto;	
 }
-#player{
+#player {
+	
+
+}
+#player1{
 	width: 17px;
 	height: 37px;
 	position: relative;
 	top: 100px;
 	left: 100px;
+}
+#player2{
+	width: 17px;
+	height: 37px;
+	position: relative;
+	top: 63px;
+	left: 200px;
 }
 .leftEntire {
 background: url(../images/left.png);
