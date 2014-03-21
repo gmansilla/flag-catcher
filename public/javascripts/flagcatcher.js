@@ -28,7 +28,7 @@ var player = {
 
 var buttons;
 
-function animatePlayer(){
+function animatePlayer() {
 	if(player.direction == "right")
 	{
 		var text = "frames";
@@ -321,6 +321,10 @@ $(function() {
 
     $(document).keyup(function(e){
         flagcatcher.pressedKeys[e.which] = false;
+    });
+
+    socket.on('startgame', function(game) {
+
     });
 
     loadStuff();

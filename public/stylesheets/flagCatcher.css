@@ -88,12 +88,12 @@ font-weight:bolder;
 	height: 600px;
 	margin: 0 auto;	
 }
-#player{
+.player{
 	width: 17px;
 	height: 37px;
 	position: relative;
-	top: 100px;
-	left: 100px;
+	/*top: 100px;
+	left: 100px;*/
 }
 .leftEntire {
 background: url(../images/left.png);
