@@ -14,18 +14,33 @@
 <div id="title"></div>
 <div id="userinfo">
 <div id="rooms">
+
     rooms
     <% if (games == 'undefined') { %>
         <b>There are no available games</b>
     <% } else { %>
         <% games.forEach(function(game, index) { %>
             <div>
-                ID: <%= game.dataValues.id %> <br />
-                Created at: <%= game.dataValues.createdAt %> <br />
-                Users: <%= game.dataValues.users.length %> <br />
-                <a href="/joingame/<%= game.dataValues.id %>" >Join</a>
-            </div>
-            <br />
+<table align="center">
+<tr>
+<td>
+    ID:  <%= game.dataValues.id %> 
+</td>
+<td>
+ Created at: <%= game.dataValues.createdAt %>
+</td>
+<td>
+   Players: <%= game.dataValues.users.length %> 
+</td>
+<td>
+  <a href="/joingame/<%= game.dataValues.id %>" >Join</a>
+</td>
+</tr>
+</table>
+
+
+
+
 
         <%  }); %>
 
