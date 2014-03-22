@@ -174,7 +174,7 @@ function movePlayer() {
         else {
             $("#player" + user.id).css("top", top - 5);
         }
-        //socket.emit('walkup', )
+        socket.emit('move', 'up');
     }
 
     if (flagcatcher.pressedKeys[KEY.DOWN]) { //arrow-down
@@ -192,6 +192,7 @@ function movePlayer() {
         else {
             $("#player" + user.id).css("top", top + 5);
         }
+        socket.emit('move', 'down');
     }
 
     if (flagcatcher.pressedKeys[KEY.LEFT]) { //w
@@ -209,7 +210,7 @@ function movePlayer() {
         else {
             $("#player" + user.id).css("left", left - 5);
         }
-
+        socket.emit('move', 'left');
 
     }
     if (flagcatcher.pressedKeys[KEY.RIGHT]) { // s
@@ -227,6 +228,7 @@ function movePlayer() {
         else {
             $("#player" + user.id).css("left", left + 5);
         }
+        socket.emit('move', 'right');
     }
     if (!(flagcatcher.pressedKeys[KEY.RIGHT]) || (flagcatcher.pressedKeys[KEY.LEFT]) || (flagcatcher.pressedKeys[KEY.UP]) || (flagcatcher.pressedKeys[KEY.DOWN])) {
         //player.direction = "standing";

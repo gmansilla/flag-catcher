@@ -75,7 +75,9 @@ exports.initialize = function (server, sessionStore, cookieParser) {
         });
 
         socket.on('move', function(direction) {
-
+            socket.get('user', function(err, user) {
+               //console.log('user ' + user.id + ' moving ' + direction);
+            });
         });
 
     });
@@ -87,14 +89,14 @@ function userJoin(user, room, team) {
         var flag1 = {
             x: gameSettings.options.flag1.x,
             y: gameSettings.options.flag1.y,
-            team: 'B',
+            team: 'b',
             carrier: null
         }
 
         var flag2 = {
             x: gameSettings.options.flag2.x,
             y: gameSettings.options.flag2.y,
-            team: 'A',
+            team: 'a',
             carrier: null
         }
 
@@ -112,9 +114,9 @@ function userJoin(user, room, team) {
 
     }
 
-    if (team == 'A') {
+    if (team == 'a') {
         positionX = Math.floor(Math.random() * ((gameSettings.options.fieldWidth / 2) - 6)) + 5;
-    } else if (team == 'B') {
+    } else if (team == 'b') {
         min = (gameSettings.options.fieldWidth / 2 + 5);
         positionX = Math.floor(Math.random() * (gameSettings.options.fieldWidth - min + 1)) + min;
     }

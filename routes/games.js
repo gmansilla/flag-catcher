@@ -66,16 +66,16 @@ exports.joingame = function(req, res) {
                 if (user.dataValues.id == req.session.passport.user.id) {
                     userInRoom = true;
                 }
-                if (user.dataValues.gamesUser.dataValues.team == 'A') {
+                if (user.dataValues.gamesUser.dataValues.team == 'a') {
                     teamA++;
-                } else if (user.dataValues.gamesUser.dataValues.team == 'B') {
+                } else if (user.dataValues.gamesUser.dataValues.team == 'b') {
                     teamB++;
                 }
             });
             if (userInRoom == false) {
                 var gamesUser = {
                     GameId: req.params.id,
-                    team: (teamB > teamA ? 'A' : 'B'),
+                    team: (teamB > teamA ? 'a' : 'b'),
                     UserId: req.session.passport.user.id
                 }
                 db.GamesUser.create(gamesUser).success(function() {
