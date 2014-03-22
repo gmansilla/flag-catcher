@@ -27,18 +27,18 @@ var buttons;
 function animatePlayer() {
     game.users.forEach(function (user) {
         //console.log(user.id);
-        console.log("user.team" + user.team.toLowerCase());
-        console.log("user.direction" + user.direction.toLowerCase());
-        console.log("user.PrevDirection" + user.prevDirection.toLowerCase());
+        //console.log("user.team" + user.team.toLowerCase());
+        //console.log("user.direction" + user.direction.toLowerCase());
+        //console.log("user.PrevDirection" + user.prevDirection.toLowerCase());
 
         if (user.direction == "right") {
             var text = "frames";
-            $("#player" + user.id).addClass(user.direction + "Entire" + user.team.toLowerCase());
+            $("#player" + user.id).addClass(user.direction + "Entire" + user.team);
 
             if (user.prevDirection != "right") {
                 $("#player" + user.id).css("width", 17);
                 //remove running class
-                $("#player" + user.id).removeClass(user.prevDirection + "Entire" + user.team.toLowerCase());
+                $("#player" + user.id).removeClass(user.prevDirection + "Entire" + user.team);
                 $("#player" + user.id).removeClass(user.prevDirection + "" + user.step);
                 user.step = 0;
                 user.prevDirection = user.direction;
@@ -46,7 +46,7 @@ function animatePlayer() {
             else {
                 $("#player" + user.id).removeClass(text + user.step);
             }
-            $("#player" + user.id).addClass(user.direction + "Entire" + user.team.toLowerCase());
+            $("#player" + user.id).addClass(user.direction + "Entire" + user.team);
             user.step += 1;
 
             if (user.step > 5) {
@@ -59,12 +59,12 @@ function animatePlayer() {
 
         if (user.direction == "left") {
             var text = "frames";
-            $("#player" + user.id).addClass(user.direction + "Entire" + user.team.toLowerCase());
+            $("#player" + user.id).addClass(user.direction + "Entire" + user.team);
 
             if (user.prevDirection != "left") {
                 $("#player" + user.id).css("width", 17);
                 //remove running class
-                $("#player" + user.id).removeClass(user.prevDirection + "Entire" + user.team.toLowerCase());
+                $("#player" + user.id).removeClass(user.prevDirection + "Entire" + user.team);
                 $("#player" + user.id).removeClass(user.prevDirection + "" + user.step);
                 user.step = 0;
                 user.prevDirection = user.direction;
@@ -72,7 +72,7 @@ function animatePlayer() {
             else {
                 $("#player" + user.id).removeClass(text + user.step);
             }
-            $("#player" + user.id).addClass(user.direction + "Entire" + user.team.toLowerCase());
+            $("#player" + user.id).addClass(user.direction + "Entire" + user.team);
             user.step += 1;
 
             if (user.step > 5) {
@@ -90,12 +90,12 @@ function animatePlayer() {
 
         if (user.direction == "up") {
             var text = "frames";
-            $("#player" + user.id).addClass(user.direction + "Entire" + user.team.toLowerCase());
+            $("#player" + user.id).addClass(user.direction + "Entire" + user.team);
 
             if (user.prevDirection != "up") {
                 $("#player" + user.id).css("width", 17);
                 //remove running class
-                $("#player" + user.id).removeClass(user.prevDirection + "Entire" + user.team.toLowerCase());
+                $("#player" + user.id).removeClass(user.prevDirection + "Entire" + user.team);
                 $("#player" + user.id).removeClass(user.prevDirection + "" + user.step);
                 user.step = 0;
                 user.prevDirection = user.direction;
@@ -103,7 +103,7 @@ function animatePlayer() {
             else {
                 $("#player" + user.id).removeClass(text + user.step);
             }
-            $("#player" + user.id).addClass(user.direction + "Entire" + user.team.toLowerCase());
+            $("#player" + user.id).addClass(user.direction + "Entire" + user.team);
             user.step += 1;
 
             if (user.step > 5) {
@@ -115,12 +115,12 @@ function animatePlayer() {
 
         if (user.direction == "down") {
             var text = "frames";
-            $("#player" + user.id).addClass(user.direction + "Entire" + user.team.toLowerCase());
+            $("#player" + user.id).addClass(user.direction + "Entire" + user.team);
 
             if (user.prevDirection != "down") {
                 $("#player" + user.id).css("width", 17);
                 //remove running class
-                $("#player" + user.id).removeClass(user.prevDirection + "Entire" + user.team.toLowerCase());
+                $("#player" + user.id).removeClass(user.prevDirection + "Entire" + user.team);
                 $("#player" + user.id).removeClass(user.prevDirection + "" + user.step);
                 user.step = 0;
                 user.prevDirection = user.direction;
@@ -128,7 +128,7 @@ function animatePlayer() {
             else {
                 $("#player" + user.id).removeClass(text + user.step);
             }
-            $("#player" + user.id).addClass(user.direction + "Entire" + user.team.toLowerCase());
+            $("#player" + user.id).addClass(user.direction + "Entire" + user.team);
             user.step += 1;
 
             if (user.step > 5) {
@@ -162,14 +162,6 @@ function animatePlayer() {
 
 
 function movePlayer() {
-    //game.mines.forEach(function (mine) {
-        //$('<div id="player' + user.id + '" class="player" style="top:' + user.y + 'px; left: ' + user.x + 'px"></div>').appendTo($('#game'));
-    //})
-
-
-
-    game.users.forEach(function (user) {
-
     if (flagcatcher.pressedKeys[KEY.PLACEMINE]) {// SPACEBAR
         
         $('<div id="mine1" class="mine" ></div>').appendTo($('#game'));
@@ -251,7 +243,7 @@ function movePlayer() {
     if (!(flagcatcher.pressedKeys[KEY.RIGHT]) || (flagcatcher.pressedKeys[KEY.LEFT]) || (flagcatcher.pressedKeys[KEY.UP]) || (flagcatcher.pressedKeys[KEY.DOWN])) {
         //player.direction = "standing";
     }
-    })
+
 
 }
 

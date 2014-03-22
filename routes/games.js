@@ -14,7 +14,7 @@ exports.add = function(req, res) {
                 game.setCreator(user).success(function() { //saves the owner
                     var gamesUser = {
                         GameId: game.id,
-                        team: (Math.floor(Math.random() * 2) == 1 ? 'A' : 'B'),
+                        team: (Math.floor(Math.random() * 2) == 1 ? 'a' : 'b'),
                         UserId: user.id
                     }
                     db.GamesUser.create(gamesUser).success(function() {
