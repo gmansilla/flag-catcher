@@ -102,6 +102,15 @@ font-weight:bolder;
 	top: 63px;
 	left: 200px;
 }
+
+.mine{
+	background: url(../images/mine.png);
+	border: 3px #999;
+	width: 15px;
+	height: 6px;
+}
+
+
 .leftEntirea {
 background: url(../images/lefta.png);
 border: 3px #999;
