@@ -102,32 +102,62 @@ font-weight:bolder;
 	top: 63px;
 	left: 200px;
 }
-.leftEntire {
-background: url(../images/left.png);
+.leftEntirea {
+background: url(../images/lefta.png);
 border: 3px #999;
 width: 15px;
 height: 37px;
 }
-.rightEntire {
-background: url(../images/right.png);
+.rightEntirea {
+background: url(../images/righta.png);
 border: 3px #999;
 width: 17px;
 height: 37px;
 }
-.upEntire {
-background: url(../images/up.png);
+.upEntirea {
+background: url(../images/upa.png);
 border: 3px #999;
 width: 17px;
 height: 37px;
 }
-.downEntire {
-background: url(../images/down.png);
+.downEntirea {
+background: url(../images/downa.png);
 border: 3px #999;
 width: 17px;
 height: 37px;
 }
-.standingEntire {
-background: url(../images/down.png);
+.standingEntirea {
+background: url(../images/downa.png);
+border: 3px #999;
+width: 17px;
+height: 37px;
+}
+.leftEntireb {
+background: url(../images/leftb.png);
+border: 3px #999;
+width: 15px;
+height: 37px;
+}
+.rightEntireb {
+background: url(../images/rightb.png);
+border: 3px #999;
+width: 17px;
+height: 37px;
+}
+.upEntireb {
+background: url(../images/upb.png);
+border: 3px #999;
+width: 17px;
+height: 37px;
+}
+.downEntireb {
+background: url(../images/downb.png);
+border: 3px #999;
+width: 17px;
+height: 37px;
+}
+.standingEntireb {
+background: url(../images/downb.png);
 border: 3px #999;
 width: 17px;
 height: 37px;
