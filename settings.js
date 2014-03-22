@@ -14,14 +14,6 @@ module.exports = {
             x: 500,
             y: 970
         },
-        initialPositionPlayer1: {
-            x: 100,
-            y: 200
-        },
-        initialPositionPlayer2: {
-            x: 500,
-            y: 400
-        }
-
+        stepSize: 5,
     }
 }

@@ -1,8 +1,8 @@
 var io = require('socket.io');
 var util = require('util');
 var db = require('../models');
-var cookie  =   require('cookie');
-var connect =   require('connect');
+var cookie = require('cookie');
+var connect = require('connect');
 var userReader = require('../utils/user_reader');
 var gameSettings = require('../settings');
 var games = {};
@@ -39,53 +39,76 @@ exports.initialize = function (server, sessionStore, cookieParser) {
         //your regular socket.io code goes here
         //and you can still use your io object
 
-        socket.on('joingame', function(gameId) {
+        socket.on('joingame', function (gameId) {
             var user = userReader.getUser(socket.handshake.headers.cookie, sessionStore);
-            socket.set('user', user, function() {
-                db.Game.find({where: {id: gameId, isOver: 0, isRunning: 0}, include: [db.GamesUser]})
-                    .success(function(game) {
-                        //console.log('gameInf');
-                        //util.inspect(console.log(game.gamesUsers));
-                        game.gamesUsers.forEach(function(gameUser){
-                           if (gameUser.dataValues.UserId == user.id) {
-                               socket.room = gameId;
-                               socket.join(gameId);
-                               socket.in(socket.room).broadcast.send(JSON.stringify({message: user.username + ' has joined the game'}));
-                               socket.in(socket.room).send(JSON.stringify({message: user.username + ' has joined the game'}));
-                               socket.set('team', gameUser.dataValues.team, function() {});
-                               userJoin(user, socket.room, gameUser.dataValues.team);
-                           }
-                        });
-                    }).error(function(err) {});
-            });
+
+            db.Game.find({where: {id: gameId, isOver: 0, isRunning: 0}, include: [db.GamesUser]})
+                .success(function (game) {
+                    //console.log('gameInf');
+                    //util.inspect(console.log(game.gamesUsers));
+                    game.gamesUsers.forEach(function (gameUser) {
+                        if (gameUser.dataValues.UserId == user.id) {
+                            socket.room = gameId;
+                            socket.join(gameId);
+                            socket.in(socket.room).broadcast.send(JSON.stringify({message: user.username + ' has joined the game'}));
+                            socket.in(socket.room).send(JSON.stringify({message: user.username + ' has joined the game'}));
+                            socket.set('team', gameUser.dataValues.team, function () {
+                            });
+                            userJoin(user, gameUser.dataValues.team, socket);
+                        }
+                    });
+                }).error(function (err) {
+                });
+
         });
 
-        socket.on('requeststartgame', function(room) {
+        socket.on('requeststartgame', function (room) {
             console.log('requeststartgame in game  ' + room);
             var user = userReader.getUser(socket.handshake.headers.cookie, sessionStore);
-            socket.get('user', function(err, user) {
+            socket.get('user', function (err, user) {
                 //check if user calling this is the owner of the game
                 if (games[room].owner == user.id) { //yes he is the owner
                     games[room].isRunning = 1;
-                    socket.in(room).broadcast.emit('startgame', games[room] );
+                    socket.in(room).broadcast.emit('startgame', games[room]);
                     socket.in(room).emit('startgame', games[room]);
                 }
             });
 
         });
 
-        socket.on('move', function(direction) {
-            socket.get('user', function(err, user) {
-               //console.log('user ' + user.id + ' moving ' + direction);
+        socket.on('move', function (direction) {
+            socket.get('user', function (err, user) {
+                var validMove = true;
+                var currentUser = games[socket.room].users[user.internalIndex];
+                switch (direction) {
+                    //TO-DO validate move is valid, if invalid set validMove to false
+                    case 'up':
+                        currentUser.y -= gameSettings.options.stepSize;
+                        break;
+                    case 'down':
+                        currentUser.y += gameSettings.options.stepSize;
+                        break;
+                    case 'left':
+                        currentUser.x -= gameSettings.options.stepSize;
+                        break;
+                    case 'right':
+                        currentUser.x += gameSettings.options.stepSize;
+                        break
+                }
+                if (validMove) {
+                    games[socket.room].users[user.internalIndex] = currentUser;
+                    socket.in(socket.room).broadcast.emit('update_users_position', games[socket.room]);
+                }
             });
         });
 
     });
 };
 
-function userJoin(user, room, team) {
+
+function userJoin(user, team, socket) {
     var positionX, positionY, min;
-    if (games[room] == undefined) {
+    if (games[socket.room] == undefined) {
         var flag1 = {
             x: gameSettings.options.flag1.x,
             y: gameSettings.options.flag1.y,
@@ -100,8 +123,8 @@ function userJoin(user, room, team) {
             carrier: null
         }
 
-        games[room] = {
-            id: room,
+        games[socket.room] = {
+            id: socket.room,
             users: [],
             mines: [],
             flag: [flag1, flag2],
@@ -130,10 +153,12 @@ function userJoin(user, room, team) {
     user.direction = 'left';
     user.prevDirection = 'nothing';
     user.step = 1;
-
     user.team = team;
-    games[room].users.push(user);
-    console.log('game data so far: ');
-    util.inspect(console.log(games[room]));
+    user.internalIndex = games[socket.room].users.length;
+    games[socket.room].users[user.internalIndex] = user;
 
+    console.log('game data so far: ');
+    util.inspect(console.log(games[socket.room]));
+    socket.set('user', user, function () {
+    });
 }

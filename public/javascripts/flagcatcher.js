@@ -305,13 +305,21 @@ $(function () {
         viewingMenu = false;
         playing = true;
 
-        game.users.forEach(function (user) {
+        game.users.forEach(function(user) {
             $('<div id="player' + user.id + '" class="player" style="top:' + user.y + 'px; left: ' + user.x + 'px"></div>').appendTo($('#game'));
         });
 
         setInterval(gameloop, 60);
     });
 
+    socket.on('update_users_position', function(gameUpdated) {
+        console.log('receiving update_users_position');
+        game = gameUpdated;
+        game.users.forEach(function(user) {
+            $('#player' + user.id).css("top", user.y + "px");
+            $('#player' + user.id).css("left", user.x + "px");
+        });
+    });
 
     loadStuff();
 
