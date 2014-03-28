@@ -177,7 +177,7 @@ function movePlayer() {
         user.direction = "up";
 
         //move the paddle B up 5 pixels
-        /*var top = parseInt($("#player" + user.id).css("top"));
+        var top = parseInt($("#player" + user.id).css("top"));
 
         if (top - 5 < 0) {
             top = 0;
@@ -185,7 +185,7 @@ function movePlayer() {
         }
         else {
             $("#player" + user.id).css("top", top - 5);
-        }*/
+        }
         socket.emit('move', 'up');
     }
 
