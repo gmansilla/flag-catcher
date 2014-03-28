@@ -22,12 +22,22 @@ flagcatcher.player = {
     y: 100
 }
 
-
+var playersSteps = {
+    step1: 1, 
+    step2: 1, 
+    step3: 1, 
+    step4: 1, 
+    step5: 1, 
+    step6: 1, 
+    step7: 1, 
+    step8: 1
+}
 
 var buttons;
 
 function animatePlayer() {
     game.users.forEach(function (user) {
+      
         //console.log(user.id);
         //console.log("user.team" + user.team.toLowerCase());
         //console.log("user.direction" + user.direction.toLowerCase());
@@ -41,21 +51,21 @@ function animatePlayer() {
                 $("#player" + user.id).css("width", 17);
                 //remove running class
                 $("#player" + user.id).removeClass(user.prevDirection + "Entire" + user.team);
-                $("#player" + user.id).removeClass(user.prevDirection + "" + user.step);
-                user.step = 0;
+                $("#player" + user.id).removeClass(user.prevDirection + "" + playersSteps[user.id]);
+                playersSteps[user.id] = 0;
                 user.prevDirection = user.direction;
             }
             else {
-                $("#player" + user.id).removeClass(text + user.step);
+                $("#player" + user.id).removeClass(text + playersSteps[user.id]);
             }
             $("#player" + user.id).addClass(user.direction + "Entire" + user.team);
-            user.step += 1;
+            playersSteps[user.id] += 1;
 
-            if (user.step > 5) {
-                user.step = 1;
+            if (playersSteps[user.id] > 5) {
+                playersSteps[user.id] = 1;
             }
 
-            $("#player" + user.id).addClass(text + user.step);
+            $("#player" + user.id).addClass(text + playersSteps[user.id]);
         }
 
 
@@ -139,6 +149,9 @@ function animatePlayer() {
 
             $("#player" + user.id).addClass(text + user.step);
         }
+        
+        //game.users[user.internalIndex] = user;
+
         /*
          if(player.direction == "standing")
          {
