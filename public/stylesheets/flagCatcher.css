@@ -103,11 +103,50 @@ font-weight:bolder;
 	left: 200px;
 }
 
+.flag{
+	width: 10px;
+	height: 23px;
+}
+
+#blueFlag
+{
+	background: url(../images/flagBlue.png);
+	position: relative;
+}
+#redFlag
+{
+	background: url(../images/flagRed.png);
+	position: relative;
+}
+
 .mine{
 	background: url(../images/mine.png);
 	border: 3px #999;
 	width: 15px;
 	height: 6px;
+}
+
+.recoveryZone
+{
+	width: 100px;
+	height: 100px;
+}
+#blueRecoveryZone{
+	background: url(../images/recoveryBlue.png);
+	position: relative;
+}
+#redRecoveryZone{
+	background: url(../images/recoveryRed.png);
+	position: relative;
+}
+
+
+#boundary{
+	background: url(../images/boundary.png);
+	border: 3px #999;
+	width: 10px;
+	height: 500px;
+	left: 400px;
 }
 
 

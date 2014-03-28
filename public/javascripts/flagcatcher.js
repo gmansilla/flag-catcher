@@ -22,6 +22,8 @@ flagcatcher.player = {
     y: 100
 }
 
+
+
 var buttons;
 
 function animatePlayer() {
@@ -318,6 +320,9 @@ $(function () {
         game.users.forEach(function(user) {
             $('#player' + user.id).css("top", user.y + "px");
             $('#player' + user.id).css("left", user.x + "px");
+            
+                console.log(user.direction + " and " + user.prevDirection);
+           
         });
     });
 
