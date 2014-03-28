@@ -73,6 +73,7 @@ font-weight:bolder;
 	height: 10px;
 	position: relative;
 	left: -35%;
+	position: absolute;
 }
 .gameBackgroundMenu{
 	background: #955 url(../images/intro.png);
@@ -86,7 +87,8 @@ font-weight:bolder;
 	-webkit-box-shadow: 0 -1px 0 #999, 0 1px 0 #999, inset 0 1px 6px #000;
 	width: 1000px;
 	height: 600px;
-	margin: 0 auto;	
+	margin: 0 auto;
+	position: relative;
 }
 .player{
 	width: 17px;
@@ -103,11 +105,61 @@ font-weight:bolder;
 	left: 200px;
 }
 
+.flag{
+	width: 10px;
+	height: 23px;
+}
+
+#blueFlag
+{
+	background: url(../images/flagBlue.png);
+	position: absolute;
+	top: 300px;
+	left: 900px;
+}
+#redFlag
+{
+	background: url(../images/flagRed.png);
+	position: absolute;
+	top: 300px;
+	left: 100px;
+}
+
 .mine{
 	background: url(../images/mine.png);
 	border: 3px #999;
 	width: 15px;
 	height: 6px;
+	position: absolute;
+}
+
+.recoveryZone
+{
+	width: 100px;
+	height: 100px;
+}
+#blueRecoveryZone{
+	background: url(../images/recoveryBlue.png);
+	position: absolute;
+	top: 0px;
+	left: 300px;
+}
+#redRecoveryZone{
+	background: url(../images/recoveryRed.png);
+	position: absolute;
+	top: 500px;
+	left: 600px;
+}
+
+
+#boundary{
+	background: url(../images/boundary.png);
+	border: 3px #999;
+	width: 10px;
+	height: 600px;
+	margin-left: 49%;
+	position: absolute;
+
 }
 
 

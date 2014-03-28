@@ -22,6 +22,8 @@ flagcatcher.player = {
     y: 100
 }
 
+
+
 var buttons;
 
 function animatePlayer() {
@@ -175,7 +177,7 @@ function movePlayer() {
         user.direction = "up";
 
         //move the paddle B up 5 pixels
-        var top = parseInt($("#player" + user.id).css("top"));
+        /*var top = parseInt($("#player" + user.id).css("top"));
 
         if (top - 5 < 0) {
             top = 0;
@@ -183,7 +185,7 @@ function movePlayer() {
         }
         else {
             $("#player" + user.id).css("top", top - 5);
-        }
+        }*/
         socket.emit('move', 'up');
     }
 
@@ -318,6 +320,9 @@ $(function () {
         game.users.forEach(function(user) {
             $('#player' + user.id).css("top", user.y + "px");
             $('#player' + user.id).css("left", user.x + "px");
+            
+                console.log(user.direction + " and " + user.prevDirection);
+           
         });
     });
 

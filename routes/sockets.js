@@ -80,18 +80,25 @@ exports.initialize = function (server, sessionStore, cookieParser) {
             socket.get('user', function (err, user) {
                 var validMove = true;
                 var currentUser = games[socket.room].users[user.internalIndex];
+                
+                 currentUser.prevDirection = currentUser.direction;
+
                 switch (direction) {
                     //TO-DO validate move is valid, if invalid set validMove to false
-                    case 'up':
+                    case 'up':  
+                        currentUser.direction = 'up'
                         currentUser.y -= gameSettings.options.stepSize;
                         break;
                     case 'down':
+                        currentUser.direction = 'down'
                         currentUser.y += gameSettings.options.stepSize;
                         break;
-                    case 'left':
+                    case 'left':         
+                        currentUser.direction = 'left'
                         currentUser.x -= gameSettings.options.stepSize;
                         break;
                     case 'right':
+                        currentUser.direction = 'right'
                         currentUser.x += gameSettings.options.stepSize;
                         break
                 }
