@@ -261,7 +261,8 @@ function gameloop() {
 }
 function viewCredits() {
     $("#title").fadeOut(800);
-    $(".button").fadeOut(1000);   //addClass("hide");
+    $(".button").fadeOut(1000); 
+    //addClass("hide");
     viewingCredits = true;
     viewingMenu = false;
 }
@@ -304,6 +305,7 @@ $(function () {
         $("#score").addClass("scoreClass");
         $("#title").fadeOut(800);
         $(".button").fadeOut(1000);
+        timer();
         viewingMenu = false;
         playing = true;
 
