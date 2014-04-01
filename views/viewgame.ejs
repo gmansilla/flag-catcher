@@ -11,6 +11,7 @@
 		<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 		<script src="/javascripts/flagcatcher.js"></script>
 	<script src="/javascripts/timer.js"></script>
+	<script src="/javascripts/score.js"></script>
 
 
 		<script>
@@ -35,10 +36,8 @@
 		        <%= player.dataValues.username %> <br />
 		    <% }); %>
 		</div>
-
-
-			<div id="timer"> </div>
-		<section id="game">
+ <table width="100%"><tr> <td id="redscore"> Red: 0</td> <td id="timer"> </td> <td id="bluescore"> Blue: 0 </td> </tr> </table>
+ 		<section id="game">
 			<div class="button" id="playBtn" ></div>
 			<div class="button" id="creditsBtn" ></div>
 			<div id="title"> </div>
