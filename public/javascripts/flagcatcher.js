@@ -1,3 +1,4 @@
+
 var socket = io.connect('/');
 
 var game;
@@ -317,8 +318,10 @@ $(function () {
         $("#score").addClass("scoreClass");
         $("#title").fadeOut(800);
         $(".button").fadeOut(1000);
+	   timer();
         viewingMenu = false;
         playing = true;
+ 
 
         game.users.forEach(function(user) {
             $('<div id="player' + user.id + '" class="player" style="top:' + user.y + 'px; left: ' + user.x + 'px"></div>').appendTo($('#game'));
