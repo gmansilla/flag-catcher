@@ -31,7 +31,15 @@ var playersSteps = {
     step5: 1, 
     step6: 1, 
     step7: 1, 
-    step8: 1
+    step8: 1,
+    step9: 1, 
+    step10: 1, 
+    step11: 1, 
+    step12: 1, 
+    step13: 1, 
+    step14: 1, 
+    step15: 1, 
+    step16: 1
 }
 
 var buttons;
@@ -45,9 +53,13 @@ function animatePlayer() {
         //console.log("user.team" + user.team.toLowerCase());
         //console.log("player.direction " + player.direction.toLowerCase());
         //console.log("player.PrevDirection" + player.prevDirection.toLowerCase());
-        player.direction = user.direction;
+        if(player.id == user.id)
+        {
+            player.direction = user.direction;
+        }
+        
         if (player.direction == "right") {
-
+            
             //console.log(playersSteps[player.id].step);
             //console.log(player.step);
             var text = "frames";
@@ -83,21 +95,21 @@ function animatePlayer() {
                 $("#player" + player.id).css("width", 17);
                 //remove running class
                 $("#player" + player.id).removeClass(player.prevDirection + "Entire" + player.team);
-                $("#player" + player.id).removeClass(player.prevDirection + "" + player.step);
-                player.step = 0;
+                $("#player" + player.id).removeClass(player.prevDirection + "" + playersSteps[player.id]);
+                playersSteps[player.id] = 0;
                 player.prevDirection = player.direction;
             }
             else {
-                $("#player" + player.id).removeClass(text + player.step);
+                $("#player" + player.id).removeClass(text + playersSteps[player.id]);
             }
             $("#player" + player.id).addClass(player.direction + "Entire" + player.team);
-            player.step += 1;
+            playersSteps[player.id] += 1;
 
-            if (player.step > 5) {
-                player.step = 1;
+            if (playersSteps[player.id] > 5) {
+                playersSteps[player.id] = 1;
             }
 
-            $("#player" + player.id).addClass(text + player.step);
+            $("#player" + player.id).addClass(text + playersSteps[player.id]);
             //console.log(player.step);
             //console.log( $("#player" + player.id).css("width"));
         }
@@ -114,21 +126,21 @@ function animatePlayer() {
                 $("#player" + player.id).css("width", 17);
                 //remove running class
                 $("#player" + player.id).removeClass(player.prevDirection + "Entire" + player.team);
-                $("#player" + player.id).removeClass(player.prevDirection + "" + player.step);
-                player.step = 0;
+                $("#player" + player.id).removeClass(player.prevDirection + "" + playersSteps[player.id]);
+                playersSteps[player.id] = 0;
                 player.prevDirection = player.direction;
             }
             else {
-                $("#player" + player.id).removeClass(text + player.step);
+                $("#player" + player.id).removeClass(text + playersSteps[player.id]);
             }
             $("#player" + player.id).addClass(player.direction + "Entire" + player.team);
-            player.step += 1;
+            playersSteps[player.id] += 1;
 
-            if (player.step > 5) {
-                player.step = 1;
+            if (playersSteps[player.id] > 5) {
+                playersSteps[player.id] = 1;
             }
 
-            $("#player" + player.id).addClass(text + player.step);
+            $("#player" + player.id).addClass(text + playersSteps[player.id]);
         }
 
         if (player.direction == "down") {
@@ -139,23 +151,23 @@ function animatePlayer() {
                 $("#player" + player.id).css("width", 17);
                 //remove running class
                 $("#player" + player.id).removeClass(player.prevDirection + "Entire" + player.team);
-                $("#player" + player.id).removeClass(player.prevDirection + "" + player.step);
-                player.step = 0;
+                $("#player" + player.id).removeClass(player.prevDirection + "" + playersSteps[player.id]);
+                playersSteps[player.id] = 0;
                 player.prevDirection = player.direction;
             }
             else {
-                $("#player" + player.id).removeClass(text + player.step);
+                $("#player" + player.id).removeClass(text + playersSteps[player.id]);
             }
             $("#player" + player.id).addClass(player.direction + "Entire" + player.team);
-            player.step += 1;
+            playersSteps[player.id] += 1;
 
-            if (player.step > 5) {
-                player.step = 1;
+            if (playersSteps[player.id] > 5) {
+                playersSteps[player.id] = 1;
             }
 
-            $("#player" + player.id).addClass(text + player.step);
+            $("#player" + player.id).addClass(text + playersSteps[player.id]);
         }
-    })
+    });
 }
 
 
