@@ -67,7 +67,7 @@ exports.initialize = function (server, sessionStore, cookieParser) {
             var user = userReader.getUser(socket.handshake.headers.cookie, sessionStore);
             socket.get('user', function (err, user) {
                 //check if user calling this is the owner of the game
-                if (games[room].owner == user.id) { //yes he is the owner
+                if (games[room] != undefined && games[room].owner == user.id) { //yes he is the owner
                     games[room].isRunning = 1;
                     socket.in(room).broadcast.emit('startgame', games[room]);
                     socket.in(room).emit('startgame', games[room]);
