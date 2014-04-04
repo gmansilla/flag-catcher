@@ -4,7 +4,7 @@ function timer() {
 var time = setInterval(function () {
  	var timer = document.getElementById("timer").innerHTML = "Timer:" + seconds;
 	seconds = seconds-1;
-	if(seconds== -1&& bluescore== redscore)
+	if(seconds == -1 && bluescore == redscore)
 	{ 
 		seconds = seconds+30;
 	}
