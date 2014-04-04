@@ -173,8 +173,10 @@ function animatePlayer() {
 
 function movePlayer() {
     if (flagcatcher.pressedKeys[KEY.PLACEMINE]) {// SPACEBAR
-        
+        if(mines> 0)
         $('<div id="mine1" class="mine" ></div>').appendTo($('#game'));
+        useMine();
+        )
     }    
 
 
