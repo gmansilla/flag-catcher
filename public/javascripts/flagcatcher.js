@@ -266,7 +266,7 @@ function movePlayer() {
 function loadStuff() {
 
     $("#game").addClass("gameBackgroundMenu");
-    score(1);
+    
 }
 
 function gameloop() {
@@ -323,13 +323,16 @@ $(function () {
         $("#score").addClass("scoreClass");
         $("#title").fadeOut(800);
         $(".button").fadeOut(1000);
-	   timer();
+	   //timer();
         viewingMenu = false;
         playing = true;
  
 
         game.users.forEach(function(user) {
-            $('<div id="player' + user.id + '" class="player" style="top:' + user.y + 'px; left: ' + user.x + 'px"></div>').appendTo($('#game'));
+            console.log(user);
+            $('<div id="player' + user.id + '" class="player " style="top:' + user.y + 'px; left: ' + user.x + 'px"></div>').appendTo("#game");
+            $("#player" + user.id).addClass(user.direction + "Entire" + user.team);
+
             user.step = 0;
             game.users[user.internalIndex] = user;
         });
@@ -347,6 +350,12 @@ $(function () {
                 console.log(user.direction + " and " + user.prevDirection);
            
         });
+    });
+
+    socket.on('score_update', function(a, b) {
+        console.log( a + " a and b: " + b);
+        $("#redscore").innerHTML = "Red: " + a;     
+        $("#bluescore").innerHTML = "Blue: " + b;
     });
 
     loadStuff();
