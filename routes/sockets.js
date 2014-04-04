@@ -158,7 +158,7 @@ function userJoin(user, team, socket) {
     user.energy = gameSettings.options.energy;
     user.mines = gameSettings.options.mines;
     user.direction = 'left';
-    user.prevDirection = 'nothing';
+    //user.prevDirection = 'nothing';
     user.step = 1;
     user.team = team;
     user.internalIndex = games[socket.room].users.length;
