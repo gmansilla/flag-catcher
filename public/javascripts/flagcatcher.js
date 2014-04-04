@@ -43,6 +43,7 @@ var playersSteps = {
 }
 
 var buttons;
+var gameLoopFunction;
 
 function animatePlayer() {
     game.users.forEach(function (player) {
@@ -265,6 +266,7 @@ function movePlayer() {
 function loadStuff() {
 
     $("#game").addClass("gameBackgroundMenu");
+    score(1);
 }
 
 function gameloop() {
@@ -276,6 +278,11 @@ function viewCredits() {
     $(".button").fadeOut(1000);   //addClass("hide");
     viewingCredits = true;
     viewingMenu = false;
+}
+
+function finishGame()
+{
+    clearInterval(gameLoopFunction);
 }
 
 $(function () {
@@ -327,7 +334,7 @@ $(function () {
             game.users[user.internalIndex] = user;
         });
 
-        setInterval(gameloop, 60);
+        gameLoopFunction = setInterval(gameloop, 60);
     });
 
     socket.on('update_users_position', function(gameUpdated) {
@@ -347,6 +354,8 @@ $(function () {
     $("#playBtn").click(function () {
         socket.emit('requeststartgame', gameID);
     });
+
+
 
     //$("#creditsBtn").click(viewCredits);
 
