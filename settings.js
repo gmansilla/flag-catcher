@@ -5,15 +5,7 @@ module.exports = {
         lifes: 2,
         mines: 2,
         fieldWidth: 980,
-        fieldHeight: 600,
-        flag1: {
-            x: 0,
-            y: 20
-        },
-        flag2: {
-            x: 500,
-            y: 970
-        },
+        fieldHeight: 562,
         stepSize: 5,
     }
 }

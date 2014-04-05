@@ -9,6 +9,7 @@ var games = {};
 
 exports.initialize = function (server, sessionStore, cookieParser) {
     io = io.listen(server);
+    io.set('log level', 1);
     io.set('authorization', function (handshakeData, accept) {
         // check if there's a cookie header
         if (handshakeData.headers.cookie) {
@@ -81,30 +82,36 @@ exports.initialize = function (server, sessionStore, cookieParser) {
                 var validMove = true;
                 var currentUser = games[socket.room].users[user.internalIndex];
                 
-                 currentUser.prevDirection = currentUser.direction;
+                currentUser.prevDirection = currentUser.direction;
+                currentUser.direction = direction;
 
                 switch (direction) {
-                    //TO-DO validate move is valid, if invalid set validMove to false
-                    case 'up':  
-                        currentUser.direction = 'up'
+                    case 'up':
                         currentUser.y -= gameSettings.options.stepSize;
+                        if (currentUser.y < 0) {
+                            currentUser.y = 0;
+                        }
                         break;
                     case 'down':
-                        currentUser.direction = 'down'
                         currentUser.y += gameSettings.options.stepSize;
+                        if (currentUser.y > gameSettings.options.fieldHeight) {
+                            currentUser.y = gameSettings.options.fieldHeight;
+                        }
                         break;
                     case 'left':         
-                        currentUser.direction = 'left'
                         currentUser.x -= gameSettings.options.stepSize;
+                        if (currentUser.x < 0) {
+                            currentUser.x = 0;
+                        }
                         break;
                     case 'right':
-                        currentUser.direction = 'right'
                         currentUser.x += gameSettings.options.stepSize;
-                        break
+                        if (currentUser.x > gameSettings.options.fieldWidth) {
+                            currentUser.x = gameSettings.options.fieldWidth;
+                        }
+                        break;
                 }
-                if (!validMove) {
-                    return;
-                }
+
                 games[socket.room].users[user.internalIndex] = currentUser;
                 socket.in(socket.room).broadcast.emit('update_users_position', games[socket.room]);
 
