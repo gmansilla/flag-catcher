@@ -108,7 +108,7 @@ exports.initialize = function (server, sessionStore, cookieParser) {
                         currentUser.x += gameSettings.options.stepSize;
                         if (currentUser.x > gameSettings.options.fieldWidth) {
                             currentUser.x = gameSettings.options.fieldWidth;
-                        }
+                    }
                         break;
                 }
 
