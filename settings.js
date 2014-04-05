@@ -7,12 +7,12 @@ module.exports = {
         fieldWidth: 980, //x
         fieldHeight: 562, //y
         flag1: {
-            x: 35,
-            y: 80
-        },
-        flag2: {
             x: 970,
             y: 550
+        },
+        flag2: {
+            x: 35,
+            y: 80
         },
         stepSize: 5,
     }
