@@ -65,7 +65,7 @@ exports.initialize = function (server, sessionStore, cookieParser) {
 
         socket.on('requeststartgame', function (room) {
             console.log('requeststartgame in game  ' + room);
-            var user = userReader.getUser(socket.handshake.headers.cookie, sessionStore);
+            //var user = userReader.getUser(socket.handshake.headers.cookie, sessionStore);
             socket.get('user', function (err, user) {
                 //check if user calling this is the owner of the game
                 if (games[room] != undefined && games[room].owner == user.id) { //yes he is the owner
@@ -108,12 +108,35 @@ exports.initialize = function (server, sessionStore, cookieParser) {
                         currentUser.x += gameSettings.options.stepSize;
                         if (currentUser.x > gameSettings.options.fieldWidth) {
                             currentUser.x = gameSettings.options.fieldWidth;
-                    }
+                        }
                         break;
+                }
+                var flag;
+                var flagIndex;
+                games[socket.room].flagHasBeenCaptured = false;
+                if (currentUser.team == 'a') {
+                    flag = games[socket.room].flag[0];
+                    flagIndex = 0;
+                } else if(currentUser.team == 'b') {
+                    flag = games[socket.room].flag[1];
+                    flagIndex = 1;
+                }
+
+                if (flag.carrier == null) {
+                    if (Math.abs(currentUser.x - flag.x) <= gameSettings.options.stepSize * 2
+                        && Math.abs(currentUser.y - flag.y) <= gameSettings.options.stepSize * 2) {
+                            flag.carrier = currentUser.id;
+                            games[socket.room].flagHasBeenCaptured = true;
+                    }
+                }
+
+                if (games[socket.room].flagHasBeenCaptured == true) {
+                    games[socket.room].flag[flagIndex] = flag;
                 }
 
                 games[socket.room].users[user.internalIndex] = currentUser;
                 socket.in(socket.room).broadcast.emit('update_users_position', games[socket.room]);
+                socket.in(socket.room).emit('update_users_position', games[socket.room]);
 
             });
         });
@@ -148,7 +171,8 @@ function userJoin(user, team, socket) {
             scoreB: 0,
             timeLeft: gameSettings.options.time,
             owner: user.id,
-            isRunning: 0
+            isRunning: 0,
+            flagHasBeenCaptured: false
         }
 
     }

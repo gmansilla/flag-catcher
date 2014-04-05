@@ -271,7 +271,7 @@ function loadStuff() {
 
 function gameloop() {
     movePlayer();
-    animatePlayer();
+    //animatePlayer();
 }
 function viewCredits() {
     $("#title").fadeOut(800);
@@ -316,6 +316,8 @@ $(function () {
     });
 
     socket.on('startgame', function (newGame) {
+        console.log('game has started');
+        console.log(newGame);
         game = newGame;
         $("#game").removeClass("gameBackgroundMenu");
         $("#game").addClass("gameBackgroundPlay");
@@ -329,10 +331,10 @@ $(function () {
  
 
         game.users.forEach(function(user) {
-            console.log(user);
+
             $('<div id="player' + user.id + '" class="player " style="top:' + user.y + 'px; left: ' + user.x + 'px"></div>').appendTo("#game");
             $("#player" + user.id).addClass(user.direction + "Entire" + user.team);
-
+            $("#player" + user.id).prependTo("#game");
             user.step = 0;
             game.users[user.internalIndex] = user;
         });
@@ -349,13 +351,37 @@ $(function () {
     socket.on('update_users_position', function(gameUpdated) {
         console.log('receiving update_users_position');
         game = gameUpdated;
-        game.users.forEach(function(user) {
-            $('#player' + user.id).css("top", user.y + "px");
-            $('#player' + user.id).css("left", user.x + "px");
-            
-                console.log(user.direction + " and " + user.prevDirection);
-           
+        game.users.forEach(function(player) {
+            if (player.id != user.id) {
+                $('#player' + player.id).css("top", player.y + "px");
+                $('#player' + player.id).css("left", player.x + "px");
+            }
+
         });
+        //check if a flag has been captured
+        if (game.flagHasBeenCaptured == true) {
+
+            game.flag.forEach(function(flag) {
+                console.log('reading flag' + i);
+                //check flag carrier
+                //if player div is empty then attach the flag
+                //then ignore this (this flag is already attached to its carrier)
+                var player = $('#player' + flag.carrier);
+                if (player.children().length == 0) {
+                    var newFlag;
+                    if (flag.team == 'a') {
+                        newFlag = $("#blueFlag");
+                    } else if (flag.team = 'b') {
+                        newFlag = $("#redFlag");
+                    }
+
+                    newFlag.appendTo("#player" + flag.carrier);
+                    $("#player" + flag.carrier).children().attr('style', '');
+                }
+
+            });
+        }
+
     });
 
     socket.on('score_update', function(a, b) {
