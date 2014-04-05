@@ -382,6 +382,11 @@ $(function () {
             });
         }
 
+        if (game.newScore != undefined) {
+            $("#redscore").text("Red: " + game.scoreB);
+            $("#bluescore").text("Blue: " + game.scoreA);
+        }
+
     });
 
     socket.on('score_update', function(a, b) {
