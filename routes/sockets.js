@@ -102,10 +102,12 @@ exports.initialize = function (server, sessionStore, cookieParser) {
                         currentUser.x += gameSettings.options.stepSize;
                         break
                 }
-                if (validMove) {
-                    games[socket.room].users[user.internalIndex] = currentUser;
-                    socket.in(socket.room).broadcast.emit('update_users_position', games[socket.room]);
+                if (!validMove) {
+                    return;
                 }
+                games[socket.room].users[user.internalIndex] = currentUser;
+                socket.in(socket.room).broadcast.emit('update_users_position', games[socket.room]);
+
             });
         });
 

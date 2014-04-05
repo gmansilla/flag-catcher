@@ -326,6 +326,12 @@ $(function () {
             user.step = 0;
             game.users[user.internalIndex] = user;
         });
+        $("#redFlag").css("top", game.flag[0].y + "px");
+        $("#redFlag").css("left", game.flag[0].x + "px");
+
+        $("#blueFlag").css("top", game.flag[1].y + "px");
+        $("#blueFlag").css("left", game.flag[1].x + "px");
+
 
         setInterval(gameloop, 60);
     });
