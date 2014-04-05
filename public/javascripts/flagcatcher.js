@@ -43,6 +43,7 @@ var playersSteps = {
 }
 
 var buttons;
+var gameLoopFunction;
 
 function animatePlayer() {
     game.users.forEach(function (player) {
@@ -265,6 +266,7 @@ function movePlayer() {
 function loadStuff() {
 
     $("#game").addClass("gameBackgroundMenu");
+    
 }
 
 function gameloop() {
@@ -276,6 +278,11 @@ function viewCredits() {
     $(".button").fadeOut(1000);   //addClass("hide");
     viewingCredits = true;
     viewingMenu = false;
+}
+
+function finishGame()
+{
+    clearInterval(gameLoopFunction);
 }
 
 $(function () {
@@ -316,13 +323,16 @@ $(function () {
         $("#score").addClass("scoreClass");
         $("#title").fadeOut(800);
         $(".button").fadeOut(1000);
-	   timer();
+	   //timer();
         viewingMenu = false;
         playing = true;
  
 
         game.users.forEach(function(user) {
-            $('<div id="player' + user.id + '" class="player" style="top:' + user.y + 'px; left: ' + user.x + 'px"></div>').appendTo($('#game'));
+            console.log(user);
+            $('<div id="player' + user.id + '" class="player " style="top:' + user.y + 'px; left: ' + user.x + 'px"></div>').appendTo("#game");
+            $("#player" + user.id).addClass(user.direction + "Entire" + user.team);
+
             user.step = 0;
             game.users[user.internalIndex] = user;
         });
@@ -333,7 +343,7 @@ $(function () {
         $("#blueFlag").css("left", game.flag[1].x + "px");
 
 
-        setInterval(gameloop, 60);
+        gameLoopFunction = setInterval(gameloop, 60);
     });
 
     socket.on('update_users_position', function(gameUpdated) {
@@ -348,11 +358,19 @@ $(function () {
         });
     });
 
+    socket.on('score_update', function(a, b) {
+        console.log( a + " a and b: " + b);
+        $("#redscore").innerHTML = "Red: " + a;     
+        $("#bluescore").innerHTML = "Blue: " + b;
+    });
+
     loadStuff();
 
     $("#playBtn").click(function () {
         socket.emit('requeststartgame', gameID);
     });
+
+
 
     //$("#creditsBtn").click(viewCredits);
 
