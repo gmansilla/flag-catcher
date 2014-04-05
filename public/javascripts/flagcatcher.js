@@ -362,7 +362,7 @@ $(function () {
         if (game.flagHasBeenCaptured == true) {
 
             game.flag.forEach(function(flag) {
-                console.log('reading flag' + i);
+
                 //check flag carrier
                 //if player div is empty then attach the flag
                 //then ignore this (this flag is already attached to its carrier)
