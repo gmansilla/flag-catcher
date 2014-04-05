@@ -271,7 +271,7 @@ function loadStuff() {
 
 function gameloop() {
     movePlayer();
-    //animatePlayer();
+    animatePlayer();
 }
 function viewCredits() {
     $("#title").fadeOut(800);
