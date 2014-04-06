@@ -349,7 +349,7 @@ $(function () {
     });
 
     socket.on('update_users_position', function(gameUpdated) {
-        console.log('receiving update_users_position');
+
         game = gameUpdated;
         game.users.forEach(function(player) {
             if (player.id != user.id) {
@@ -382,13 +382,26 @@ $(function () {
             });
         }
 
+        if (game.newScore != undefined) {
+            var flag;
+            if (game.resetFlag == 'a') {
+                $("#redscore").text("Red: " + game.scoreB);
+                flag = $("#blueFlag");
+                x = game.flag[1].x;
+                y = game.flag[1].y;
+            } else if (game.resetFlag == 'b') {
+                $("#bluescore").text("Blue: " + game.scoreA);
+                flag = $("#redFlag");
+                x = game.flag[0].x;
+                y = game.flag[0].y;
+            }
+            flag.prependTo("#game");
+            flag.css("top", y + "px");
+            flag.css("left", x + "px");
+        }
     });
 
-    socket.on('score_update', function(a, b) {
-        console.log( a + " a and b: " + b);
-        $("#redscore").innerHTML = "Red: " + a;     
-        $("#bluescore").innerHTML = "Blue: " + b;
-    });
+
 
     loadStuff();
 

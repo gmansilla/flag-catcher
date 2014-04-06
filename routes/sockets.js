@@ -123,14 +123,32 @@ exports.initialize = function (server, sessionStore, cookieParser) {
                 }
 
                 if (flag.carrier == null) {
+                    //checks if user captured a flag
                     if (Math.abs(currentUser.x - flag.x) <= gameSettings.options.stepSize * 2
                         && Math.abs(currentUser.y - flag.y) <= gameSettings.options.stepSize * 2) {
                             flag.carrier = currentUser.id;
                             games[socket.room].flagHasBeenCaptured = true;
                     }
+                } else if (flag.carrier == currentUser.id) {
+                    //checks if user returned flag to base, if so then score
+                    if (currentUser.team == 'a' && currentUser.x == 0) {
+                        games[socket.room].scoreA++;
+                        games[socket.room].newScore = true;
+                        flag.x = gameSettings.options.flag1.x;
+                        flag.y = gameSettings.options.flag1.y;
+                        flag.carrier = null;
+                        games[socket.room].resetFlag = 'b';
+                    } else if (currentUser.team == 'b' && currentUser.x == gameSettings.options.fieldWidth) {
+                        games[socket.room].scoreB++;
+                        games[socket.room].newScore = true;
+                        flag.x = gameSettings.options.flag2.x;
+                        flag.y = gameSettings.options.flag2.y;
+                        flag.carrier = null;
+                        games[socket.room].resetFlag = 'a';
+                    }
                 }
 
-                if (games[socket.room].flagHasBeenCaptured == true) {
+                if (games[socket.room].flagHasBeenCaptured == true || games[socket.room].newScore != undefined) {
                     games[socket.room].flag[flagIndex] = flag;
                 }
 
