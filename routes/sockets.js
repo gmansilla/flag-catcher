@@ -134,14 +134,21 @@ exports.initialize = function (server, sessionStore, cookieParser) {
                     if (currentUser.team == 'a' && currentUser.x == 0) {
                         games[socket.room].scoreA++;
                         games[socket.room].newScore = true;
+                        flag.x = gameSettings.options.flag1.x;
+                        flag.y = gameSettings.options.flag1.y;
+                        flag.carrier = null;
+                        games[socket.room].resetFlag = 'b';
                     } else if (currentUser.team == 'b' && currentUser.x == gameSettings.options.fieldWidth) {
                         games[socket.room].scoreB++;
                         games[socket.room].newScore = true;
+                        flag.x = gameSettings.options.flag2.x;
+                        flag.y = gameSettings.options.flag2.y;
+                        flag.carrier = null;
+                        games[socket.room].resetFlag = 'a';
                     }
-
                 }
 
-                if (games[socket.room].flagHasBeenCaptured == true) {
+                if (games[socket.room].flagHasBeenCaptured == true || games[socket.room].newScore != undefined) {
                     games[socket.room].flag[flagIndex] = flag;
                 }
 
