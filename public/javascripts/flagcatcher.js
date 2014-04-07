@@ -383,14 +383,20 @@ $(function () {
         }
 
         if (game.newScore != undefined) {
-            var flag;
             if (game.resetFlag == 'a') {
                 $("#redscore").text("Red: " + game.scoreB);
+            } else if (game.resetFlag == 'b') {
+                $("#bluescore").text("Blue: " + game.scoreA);
+            }
+        }
+
+        if (game.resetFlag != undefined) {
+            var flag;
+            if (game.resetFlag == 'a') {
                 flag = $("#blueFlag");
                 x = game.flag[1].x;
                 y = game.flag[1].y;
             } else if (game.resetFlag == 'b') {
-                $("#bluescore").text("Blue: " + game.scoreA);
                 flag = $("#redFlag");
                 x = game.flag[0].x;
                 y = game.flag[0].y;

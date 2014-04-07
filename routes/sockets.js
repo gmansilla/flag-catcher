@@ -81,7 +81,7 @@ exports.initialize = function (server, sessionStore, cookieParser) {
             socket.get('user', function (err, user) {
                 var validMove = true;
                 var currentUser = games[socket.room].users[user.internalIndex];
-                
+                games[socket.room].resetFlag = null;
                 currentUser.prevDirection = currentUser.direction;
                 currentUser.direction = direction;
 
@@ -112,14 +112,19 @@ exports.initialize = function (server, sessionStore, cookieParser) {
                         break;
                 }
                 var flag;
+                var myTeamFlag;
                 var flagIndex;
                 games[socket.room].flagHasBeenCaptured = false;
                 if (currentUser.team == 'a') {
                     flag = games[socket.room].flag[0];
                     flagIndex = 0;
+                    myTeamFlag = games[socket.room].flag[1];
+                    myTeamFlagIndex = 1;
                 } else if(currentUser.team == 'b') {
                     flag = games[socket.room].flag[1];
                     flagIndex = 1;
+                    myTeamFlag = games[socket.room].flag[0];
+                    myTeamFlagIndex = 0;
                 }
 
                 if (flag.carrier == null) {
@@ -134,21 +139,47 @@ exports.initialize = function (server, sessionStore, cookieParser) {
                     if (currentUser.team == 'a' && currentUser.x == 0) {
                         games[socket.room].scoreA++;
                         games[socket.room].newScore = true;
-                        flag.x = gameSettings.options.flag1.x;
-                        flag.y = gameSettings.options.flag1.y;
-                        flag.carrier = null;
                         games[socket.room].resetFlag = 'b';
                     } else if (currentUser.team == 'b' && currentUser.x == gameSettings.options.fieldWidth) {
                         games[socket.room].scoreB++;
                         games[socket.room].newScore = true;
-                        flag.x = gameSettings.options.flag2.x;
-                        flag.y = gameSettings.options.flag2.y;
-                        flag.carrier = null;
                         games[socket.room].resetFlag = 'a';
                     }
                 }
 
-                if (games[socket.room].flagHasBeenCaptured == true || games[socket.room].newScore != undefined) {
+                //check if you are touching someone carrying a flag, if so send that player to their base
+                //and make them to return your flag
+                if (myTeamFlag.carrier != null) {
+                    games[socket.room].users.forEach(function(player) {
+                        if (player.team != currentUser.team && myTeamFlag.carrier == player.id ) {
+
+                            if (Math.abs(currentUser.x - player.x) <= gameSettings.options.stepSize * 3
+                                && Math.abs(currentUser.y - player.y) <= gameSettings.options.stepSize * 3) {
+                                games[socket.room].resetFlag = myTeamFlag.team;
+                                flag = myTeamFlag;
+                                flagIndex = myTeamFlagIndex;
+                                games[socket.room].users[player.internalIndex].x = player.initialX;
+                                games[socket.room].users[player.internalIndex].y = player.initialY;
+                            }
+                        }
+                    });
+                }
+
+
+                if (games[socket.room].resetFlag == 'b') {
+                    flag.x = gameSettings.options.flag1.x;
+                    flag.y = gameSettings.options.flag1.y;
+                    flag.carrier = null;
+                }
+
+                if (games[socket.room].resetFlag == 'a') {
+                    flag.x = gameSettings.options.flag2.x;
+                    flag.y = gameSettings.options.flag2.y;
+                    flag.carrier = null;
+                }
+
+                if (games[socket.room].flagHasBeenCaptured == true || games[socket.room].newScore != undefined
+                    || games[socket.room].resetFlag != undefined) {
                     games[socket.room].flag[flagIndex] = flag;
                 }
 
@@ -205,6 +236,8 @@ function userJoin(user, team, socket) {
     positionY = Math.floor(Math.random() * (gameSettings.options.fieldHeight - min + 1)) + min;
     user.x = positionX;
     user.y = positionY;
+    user.initialX = user.x;
+    user.initialY = user.y;
     user.lives = gameSettings.options.lifes;
     user.energy = gameSettings.options.energy;
     user.mines = gameSettings.options.mines;
