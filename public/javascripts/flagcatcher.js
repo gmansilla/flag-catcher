@@ -174,96 +174,40 @@ function animatePlayer() {
 
 function movePlayer() {
     if (flagcatcher.pressedKeys[KEY.PLACEMINE]) {// SPACEBAR
-        
         $('<div id="mine1" class="mine" ></div>').appendTo($('#game'));
     }    
 
-
-
-    //use our custom timer to continuously check if a key is pressed
     if (flagcatcher.pressedKeys[KEY.UP]) {// arrow-up
-        //Change direction
         user.direction = "up";
         game.users[user.internalIndex] = user;
-
-        //move the paddle B up 5 pixels
-        var top = parseInt($("#player" + user.id).css("top"));
-
-        if (top - 5 < 0) {
-            top = 0;
-            $("#player" + user.id).css("top", top);
-        }
-        else {
-            $("#player" + user.id).css("top", top - 5);
-        }
         socket.emit('move', 'up');
     }
 
     if (flagcatcher.pressedKeys[KEY.DOWN]) { //arrow-down
-
-        //Change direction
         user.direction = "down";
         game.users[user.internalIndex] = user;
-
-        //move the paddle B down 5 pixels
-        var top = parseInt($("#player" + user.id).css("top"));
-
-        if (top + 5 > parseInt($("#game").css("height")) - parseInt($("#player" + user.id).css("height"))) {
-            top = parseInt($("#game").css("height")) - parseInt($("#player" + user.id).css("height"));
-            $("#player" + user.id).css("top", top);
-        }
-        else {
-            $("#player" + user.id).css("top", top + 5);
-        }
         socket.emit('move', 'down');
     }
 
     if (flagcatcher.pressedKeys[KEY.LEFT]) { //w
-        //move the paddle A up 5 pixels
-
-        //Change direction
         user.direction = "left";
         game.users[user.internalIndex] = user;
-
-        var left = parseInt($("#player" + user.id).css("left"));
-
-        if (left - 5 < 0) {
-            left = 0;
-            $("#player" + user.id).css("left", left);
-        }
-        else {
-            $("#player" + user.id).css("left", left - 5);
-        }
         socket.emit('move', 'left');
-
     }
-    if (flagcatcher.pressedKeys[KEY.RIGHT]) { // s
-        //move the paddle A down 5 pixels
 
-        //Change direction
+    if (flagcatcher.pressedKeys[KEY.RIGHT]) { // s
         user.direction = "right";
         game.users[user.internalIndex] = user;
-
-        var left = parseInt($("#player" + user.id).css("left"));
-
-        if (left + 5 > parseInt($("#game").css("width")) - parseInt($("#player" + user.id).css("width"))) {
-            left = parseInt($("#game").css("width")) - parseInt($("#player" + user.id).css("width"));
-            $("#player" + user.id).css("left", left);
-        }
-        else {
-            $("#player" + user.id).css("left", left + 5);
-        }
         socket.emit('move', 'right');
     }
+
     if (!(flagcatcher.pressedKeys[KEY.RIGHT]) || (flagcatcher.pressedKeys[KEY.LEFT]) || (flagcatcher.pressedKeys[KEY.UP]) || (flagcatcher.pressedKeys[KEY.DOWN])) {
         //player.direction = "standing";
     }
-
-
 }
 
 
-function loadStuff() {
+function loadGame() {
 
     $("#game").addClass("gameBackgroundMenu");
     
@@ -316,53 +260,41 @@ $(function () {
     });
 
     socket.on('startgame', function (newGame) {
-        console.log('game has started');
-        console.log(newGame);
         game = newGame;
         $("#game").removeClass("gameBackgroundMenu");
         $("#game").addClass("gameBackgroundPlay");
-
         $("#score").addClass("scoreClass");
         $("#title").fadeOut(800);
         $(".button").fadeOut(1000);
 	   //timer();
         viewingMenu = false;
         playing = true;
- 
-
         game.users.forEach(function(user) {
-
             $('<div id="player' + user.id + '" class="player " style="top:' + user.y + 'px; left: ' + user.x + 'px"></div>').appendTo("#game");
             $("#player" + user.id).addClass(user.direction + "Entire" + user.team);
             $("#player" + user.id).prependTo("#game");
             user.step = 0;
             game.users[user.internalIndex] = user;
         });
+
         $("#redFlag").css("top", game.flag[0].y + "px");
         $("#redFlag").css("left", game.flag[0].x + "px");
 
         $("#blueFlag").css("top", game.flag[1].y + "px");
         $("#blueFlag").css("left", game.flag[1].x + "px");
 
-
         gameLoopFunction = setInterval(gameloop, 60);
     });
 
     socket.on('update_users_position', function(gameUpdated) {
-
         game = gameUpdated;
         game.users.forEach(function(player) {
-            if (player.id != user.id) {
-                $('#player' + player.id).css("top", player.y + "px");
-                $('#player' + player.id).css("left", player.x + "px");
-            }
-
+            $('#player' + player.id).css("top", player.y + "px");
+            $('#player' + player.id).css("left", player.x + "px");
         });
         //check if a flag has been captured
         if (game.flagHasBeenCaptured == true) {
-
             game.flag.forEach(function(flag) {
-
                 //check flag carrier
                 //if player div is empty then attach the flag
                 //then ignore this (this flag is already attached to its carrier)
@@ -374,11 +306,9 @@ $(function () {
                     } else if (flag.team = 'b') {
                         newFlag = $("#redFlag");
                     }
-
                     newFlag.appendTo("#player" + flag.carrier);
                     $("#player" + flag.carrier).children().attr('style', '');
                 }
-
             });
         }
 
@@ -407,17 +337,9 @@ $(function () {
         }
     });
 
-
-
-    loadStuff();
-
+    loadGame();
     $("#playBtn").click(function () {
         socket.emit('requeststartgame', gameID);
     });
-
-
-
     //$("#creditsBtn").click(viewCredits);
-
-
 });
