@@ -8,7 +8,7 @@ var KEY = {
     DOWN: 83,
     RIGHT: 68,
     LEFT: 65,
-    PLACEMINE: 32 //spacebar
+    PLACEMINE: 77 // m
 };
 
 var flagcatcher = {
@@ -47,22 +47,11 @@ var gameLoopFunction;
 
 function animatePlayer() {
     game.users.forEach(function (player) {
-
-        //console.log("user: " + user.id + " has step: " + user.step);
-
-        //console.log(user.id);
-        //console.log("user.team" + user.team.toLowerCase());
-        //console.log("player.direction " + player.direction.toLowerCase());
-        //console.log("player.PrevDirection" + player.prevDirection.toLowerCase());
-        if(player.id == user.id)
-        {
+        if(player.id == user.id) {
             player.direction = user.direction;
         }
         
         if (player.direction == "right") {
-            
-            //console.log(playersSteps[player.id].step);
-            //console.log(player.step);
             var text = "frames";
             $("#player" + player.id).addClass(player.direction + "Entire" + player.team);
 
@@ -174,28 +163,29 @@ function animatePlayer() {
 
 function movePlayer() {
     if (flagcatcher.pressedKeys[KEY.PLACEMINE]) {// SPACEBAR
-        $('<div id="mine1" class="mine" ></div>').appendTo($('#game'));
+        flagcatcher.pressedKeys[KEY.PLACEMINE] = false;
+        socket.emit('put_mine');
     }    
 
-    if (flagcatcher.pressedKeys[KEY.UP]) {// arrow-up
+    if (flagcatcher.pressedKeys[KEY.UP]) {
         user.direction = "up";
         game.users[user.internalIndex] = user;
         socket.emit('move', 'up');
     }
 
-    if (flagcatcher.pressedKeys[KEY.DOWN]) { //arrow-down
+    if (flagcatcher.pressedKeys[KEY.DOWN]) {
         user.direction = "down";
         game.users[user.internalIndex] = user;
         socket.emit('move', 'down');
     }
 
-    if (flagcatcher.pressedKeys[KEY.LEFT]) { //w
+    if (flagcatcher.pressedKeys[KEY.LEFT]) {
         user.direction = "left";
         game.users[user.internalIndex] = user;
         socket.emit('move', 'left');
     }
 
-    if (flagcatcher.pressedKeys[KEY.RIGHT]) { // s
+    if (flagcatcher.pressedKeys[KEY.RIGHT]) {
         user.direction = "right";
         game.users[user.internalIndex] = user;
         socket.emit('move', 'right');
@@ -252,11 +242,16 @@ $(function () {
     });
 
     $(document).keydown(function (e) {
-        flagcatcher.pressedKeys[e.which] = true;
+        if (e.which != KEY.PLACEMINE) {
+            flagcatcher.pressedKeys[e.which] = true;
+        }
     });
 
     $(document).keyup(function (e) {
         flagcatcher.pressedKeys[e.which] = false;
+        if (e.which == KEY.PLACEMINE) {
+            flagcatcher.pressedKeys[e.which] = true;
+        }
     });
 
     socket.on('startgame', function (newGame) {
@@ -335,6 +330,23 @@ $(function () {
             flag.css("top", y + "px");
             flag.css("left", x + "px");
         }
+    });
+
+    socket.on('team_put_mine', function(mine) {
+        console.log('team put a mine');
+        console.log(mine);
+        var mineClass;
+        if (mine.team == 'a') {
+            mineClass = 'mineRed';
+        } else if (mine.team == 'b') {
+            mineClass = 'mineBlue';
+        }
+        mine.y += 40;
+        $('<div class="mine ' + mineClass + '" ></div>').appendTo($('#game')).css({top: mine.y + "px", left: mine.x + "px"});
+    });
+
+    socket.on('player_stepped_on_mine', function() {
+        //play sound
     });
 
     loadGame();

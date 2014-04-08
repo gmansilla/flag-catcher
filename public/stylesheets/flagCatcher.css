@@ -126,12 +126,19 @@ font-weight:bolder;
 
 }
 
-.mine{
-	background: url(../images/mine.png);
+.mine {
 	border: 3px #999;
 	width: 15px;
 	height: 6px;
-	/*position: absolute;*/
+	position: absolute;
+}
+
+.mineBlue {
+    background: url(../images/mineRed.png);
+}
+
+.mineRed {
+    background: url(../images/mineBlue.png);
 }
 
 .recoveryZone

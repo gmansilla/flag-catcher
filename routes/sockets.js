@@ -165,6 +165,30 @@ exports.initialize = function (server, sessionStore, cookieParser) {
                     });
                 }
 
+                //check if you are steping on a mine
+
+                for (i = 0; i < games[socket.room].mines.length; i++) {
+                    var mine = games[socket.room].mines[i];
+                    if (mine.team == currentUser.team) {
+                        continue;
+                    }
+                    console.log('currentUser.x ' + currentUser.x);
+                    console.log('currentUser.y ' + currentUser.y);
+                    console.log(' ');
+                    console.log('mine.x ' + mine.x);
+                    console.log('mine.y ' + mine.y);
+                    var differenceY = currentUser.y - mine.y;
+                    if (Math.abs(currentUser.x - mine.x) <= gameSettings.options.stepSize * 2
+                        && differenceY > 0 && differenceY <= gameSettings.options.stepSize * 2) {
+                        //player stepped on a mine
+                        socket.in(socket.room).emit('player_stepped_on_mine', function() {});
+                        //check if player was carrying a flag, if so, reset flag
+                        if (flag.carrier == currentUser.id) {
+                            games[socket.room].resetFlag = flag.team;
+                        }
+                    }
+
+                }
 
                 if (games[socket.room].resetFlag == 'b') {
                     flag.x = gameSettings.options.flag1.x;
@@ -184,9 +208,39 @@ exports.initialize = function (server, sessionStore, cookieParser) {
                 }
 
                 games[socket.room].users[user.internalIndex] = currentUser;
-                socket.in(socket.room).broadcast.emit('update_users_position', games[socket.room]);
-                socket.in(socket.room).emit('update_users_position', games[socket.room]);
 
+                var game = games[socket.room];
+                var mines = game.mines;
+                game.mines = []; //users should not receive information about mines in this event. "put_mine" does that
+
+                socket.in(socket.room).broadcast.emit('update_users_position', game);
+                socket.in(socket.room).emit('update_users_position', game);
+                game.mines = mines;
+                //console.log('game data so far: ');
+                //util.inspect(console.log(games[socket.room]));
+
+            });
+        });
+
+        socket.on('put_mine', function(){
+            socket.get('user', function (err, user) {
+                var currentUser = games[socket.room].users[user.internalIndex];
+                if (currentUser.mines > 0) {
+                    //socket.join(socket.room + 'team-' + user.team);
+                    var mine = {
+                        owner: currentUser.id,
+                        team: currentUser.team,
+                        x: currentUser.x,
+                        y: currentUser.y
+                    }
+                    currentUser.mines--;
+                    games[socket.room].users[user.internalIndex] = currentUser;
+                    games[socket.room].mines[games[socket.room].mines.length] = mine;
+                    socket.in(socket.room + '-team-' + currentUser.team).broadcast.emit('team_put_mine', mine);
+                    socket.in(socket.room + '-team-' + currentUser.team).emit('team_put_mine', mine);
+                    console.log('game data AFTER this mine: ');
+                    util.inspect(console.log(games[socket.room]));
+                }
             });
         });
 
@@ -251,5 +305,6 @@ function userJoin(user, team, socket) {
     console.log('game data so far: ');
     util.inspect(console.log(games[socket.room]));
     socket.set('user', user, function () {
+        socket.join(socket.room + '-team-' + user.team);
     });
 }
